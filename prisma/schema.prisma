@@ -1,0 +1,123 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String
+  slug        String    @unique
+  description String?
+  image       String?
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+}
+
+model Brand {
+  id        Int       @id @default(autoincrement())
+  name      String
+  slug      String    @unique
+  logo      String?
+  order     Int       @default(0)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
+}
+
+model Product {
+  id      Int    @id @default(autoincrement())
+  name    String
+  slug    String @unique
+
+  // Identification
+  partNumber String?
+
+  // Classification
+  brand        Brand?    @relation(fields: [brandId], references: [id])
+  brandId      Int?
+  category     Category? @relation(fields: [categoryId], references: [id])
+  categoryId   Int?
+  subcategory  String?
+
+  // Content
+  shortDescription  String?
+  fullDescription   String?
+  specifications    String? // free-text; can hold structured text or simple markdown
+  applications      String?
+  compatibleModels  String?
+  crossReference    String?
+
+  // Documents
+  datasheetUrl  String?
+  catalogueUrl  String?
+
+  // Flags
+  featured Boolean @default(false)
+  status   String  @default("active") // "active" | "draft"
+
+  // SEO
+  seoTitle        String?
+  metaDescription String?
+  focusKeyword    String?
+
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  images ProductImage[]
+
+  @@index([categoryId])
+  @@index([brandId])
+  @@index([featured])
+  @@index([status])
+}
+
+model ProductImage {
+  id        Int     @id @default(autoincrement())
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int
+  url       String
+  order     Int     @default(0)
+}
+
+// --- Admin auth (same passwordless pattern as FilterTech: email + OTP only) ---
+
+model AdminAuth {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  tokenVersion Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model OtpRequest {
+  id        Int      @id @default(autoincrement())
+  email     String
+  otpHash   String
+  attempts  Int      @default(0)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email, createdAt])
+}
+
+model SiteContent {
+  id           Int      @id @default(autoincrement())
+  section      String   @unique   // "hero" | "about" | "cta"
+  eyebrow      String?
+  heading      String?
+  headingLine2 String?
+  body1        String?
+  body2        String?
+  body3        String?
+  image        String?
+  imageAlt     String?
+  tagline      String?            // comma-separated, Hero-ന് മാത്രം
+  updatedAt    DateTime @updatedAt
+}
