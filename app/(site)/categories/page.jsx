@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma';
 
 export const metadata = {
   title: 'Categories',
-  description: 'Browse Zeemac Group filtration products by category — marine engine, oil, fuel, air, hydraulic, water, compressor and industrial filters.'
+  description: 'Browse Zeemac Filters filtration products by category — marine engine, oil, fuel, air, hydraulic, water, compressor and industrial filters.'
 };
 export const dynamic = 'force-dynamic';
 

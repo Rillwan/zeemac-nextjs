@@ -12,7 +12,7 @@ export default async function About() {
         <Reveal as="div" className="about-image-wrap ">
           <Image
             src={content?.image || '/images/about.jpeg'}
-            alt={content?.imageAlt || 'Zeemac Group filtration products and marine equipment'}
+            alt={content?.imageAlt || 'Zeemac Filters filtration products and marine equipment'}
             width={640}
             height={480}
             className="w-full h-auto"
@@ -27,7 +27,7 @@ export default async function About() {
           <Reveal as="p" className="eyebrow">About Us</Reveal>
           <Reveal as="h2" className="section-title mt-3" delay={0.05}> {content?.heading || 'Your Trusted Partner for Filtration &amp; Marine Solutions'} </Reveal>
           <Reveal as="p" className="mt-4 text-slate-500 max-w-md" delay={0.1}>
-            {content?.body1 || 'At Zeemac Group, we provide reliable filtration and marine industrial products designed to support the performance, efficiency and longevity of critical equipment.'}
+            {content?.body1 || 'At Zeemac Filters, we provide reliable filtration and marine industrial products designed to support the performance, efficiency and longevity of critical equipment.'}
           </Reveal>
           <Reveal as="p" className="mt-4 text-slate-500 max-w-md" delay={0.15}>
             {content?.body1 || 'From engine filters and hydraulic filtration to industrial and process filtration solutions, our product range serves a wide variety of applications across marine, industrial, construction, power and other sectors.'}
@@ -36,7 +36,7 @@ export default async function About() {
             {content?.body1 || 'With a strong focus on product quality, availability and customer support, we help businesses find the right filtration solution for their specific requirements.'}
           </Reveal>
           <Reveal as="a" href="/about" className="btn-primary mt-8" delay={0.25}>
-            About Zeemac Group <ArrowRight className="w-4 h-4" />
+            About Zeemac Filters <ArrowRight className="w-4 h-4" />
           </Reveal>
         </div>
       </div>

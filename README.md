@@ -1,4 +1,4 @@
-# Zeemac Group — Next.js
+# Zeemac Filters — Next.js
 
 ## Phase 1a: scaffold + schema + auth
 ## Phase 1b: homepage

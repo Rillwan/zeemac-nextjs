@@ -24,7 +24,7 @@ function SplitHeadline({ text, className = '' }) {
   );
 }
 
-export default function Hero() {
+export default function Hero({ data }) {
   const heroRef = useRef(null);
   const imageWrapRef = useRef(null);
 
@@ -74,11 +74,11 @@ export default function Hero() {
         <div className="realative z-1">
           {/* <p className="eyebrow">Reliable Filters for Marine, Industrial &amp; Heavy-Duty Applications</p> */}
           <h1 className="hero-title mt-4 text-4xl text-center md:text-start lg:text-6xl xl:text-7xl font-medium md:text-nowrap ">
-            <SplitHeadline text="Marine & Industrial" className="text-brand-navy" />
-            <SplitHeadline text="Filtration Solutions" className="text-brand" />
+            <SplitHeadline text={data?.heading || 'Marine & Industrial'} className="text-brand-navy" />
+            <SplitHeadline text={data?.headingLine2 || 'Filtration Solutions'} className="text-brand" />
           </h1>
           <p className="mt-6 mx-auto md:ml-0 text-slate-600 text-center md:text-start text-[14px] max-w-md" data-hero-text>
-            Zeemac Group supplies a comprehensive range of filtration products for marine engines, industrial machinery, hydraulic systems, compressors, power plants and other demanding applications.
+            {data?.body1 || 'Zeemac supplies a comprehensive range of filtration products for marine engines, industrial machinery, hydraulic systems, compressors, power plants and other demanding applications.'}
           </p>
           <div className="mt-8 flex items-center justify-center md:justify-start flex-wrap gap-4" data-hero-actions>
             <a href="/products" className="btn-primary w-fit md:w-auto text-nowrap">Explore Products <ArrowRight className="w-4 h-4" /></a>

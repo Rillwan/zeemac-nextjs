@@ -15,7 +15,7 @@ export async function generateMetadata({ params }) {
   if (!category) return {};
   return {
     title: category.name,
-    description: category.description || `Browse ${category.name} from Zeemac Group.`
+    description: category.description || `Browse ${category.name} from Zeemac Filters.`
   };
 }
 
@@ -30,7 +30,7 @@ export default async function CategoryDetailPage({ params }) {
     include: { brand: true, category: true, images: { orderBy: { order: 'asc' }, take: 1 } }
   });
 
-  const SITE_URL = 'https://www.zeemacgroup.com';
+  const SITE_URL = 'https://www.zeemacfilters.com';
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',

@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma';
 
 export const metadata = {
   title: 'Brands',
-  description: 'Filtration products from established brands, supplied by Zeemac Group.'
+  description: 'Filtration products from established brands, supplied by Zeemac Filters.'
 };
 export const dynamic = 'force-dynamic';
 

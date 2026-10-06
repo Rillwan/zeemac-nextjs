@@ -76,7 +76,7 @@ export default function Header() {
     <>
       <header id="site-header" ref={headerRef} className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${scrolled ? 'scrolled' : ''}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 flex items-center justify-between h-16 xl:h-20">
-          <Link href={resolveHref('#home')} className="flex items-center gap-2 min-w-0" aria-label="Zeemac Group home">
+          <Link href={resolveHref('#home')} className="flex items-center gap-2 min-w-0" aria-label="Zeemac Filters home">
             {/* <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
             <circle cx="17" cy="17" r="13" stroke="#1E63D6" strokeWidth="2.4" />
             <circle cx="17" cy="17" r="3.2" fill="#1E63D6" />
@@ -84,15 +84,15 @@ export default function Header() {
           </svg> */}
             <Image
               src="/images/logo.png"
-              alt="Zeemac Group"
+              alt="Zeemac Filters"
               width={100}
               height={50}
               priority
               className="w-[60px] h-auto"
             />
             <span className="leading-tight min-w-0">
-              <span className="block text-lg sm:text-xl font-extrabold text-brand-navy truncate">Zeemac<span className="text-brand"> Group</span></span>
-              <span className="hidden sm:block text-[8px] tracking-[0.18em] text-slate-800 font-medium -mt-0.5 whitespace-nowrap">MARINE &amp; INDUSTRIAL FILTRATION</span>
+              <span className="block text-lg sm:text-xl font-extrabold text-brand-navy truncate">Zeemac<span className="text-brand"> Filters</span></span>
+              <span className="hidden sm:block text-[8px] tracking-[0.18em] text-slate-800 font-medium -mt-0.5 whitespace-nowrap">COMPLETE FILTRATION SOLUTIONS</span>
             </span>
           </Link>
 

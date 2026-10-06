@@ -14,7 +14,7 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   const brand = await getBrand(slug);
   if (!brand) return {};
-  return { title: brand.name, description: `Browse ${brand.name} filtration products from Zeemac Group.` };
+  return { title: brand.name, description: `Browse ${brand.name} filtration products from Zeemac Filters.` };
 }
 
 export default async function BrandDetailPage({ params }) {
@@ -28,7 +28,7 @@ export default async function BrandDetailPage({ params }) {
     include: { brand: true, category: true, images: { orderBy: { order: 'asc' }, take: 1 } }
   });
 
-  const SITE_URL = 'https://www.zeemacgroup.com';
+  const SITE_URL = 'https://www.zeemacfilters.com';
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',

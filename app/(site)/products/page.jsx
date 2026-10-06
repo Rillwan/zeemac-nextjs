@@ -5,7 +5,7 @@ import { PackageSearch } from 'lucide-react';
 
 export const metadata = {
   title: 'Products',
-  description: 'Browse marine and industrial filtration products from Zeemac Group — engine, oil, fuel, air, hydraulic, water and compressor filters.'
+  description: 'Browse marine and industrial filtration products from Zeemac Filters — engine, oil, fuel, air, hydraulic, water and compressor filters.'
 };
 export const dynamic = 'force-dynamic';
 

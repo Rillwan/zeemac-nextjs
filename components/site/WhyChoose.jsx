@@ -16,7 +16,7 @@ export default function WhyChoose() {
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         <div className="max-w-xl mb-12">
           <Reveal as="p" className="eyebrow">Why Choose Us</Reveal>
-          <Reveal as="h2" className="section-title mt-3" delay={0.05}>Why Businesses Choose Zeemac Group</Reveal>
+          <Reveal as="h2" className="section-title mt-3" delay={0.05}>Why Businesses Choose Zeemac Filters</Reveal>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8">

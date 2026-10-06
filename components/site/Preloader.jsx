@@ -44,7 +44,7 @@ export default function Preloader() {
             <path d="M36 10V22M36 50V62M10 36H22M50 36H62M17.5 17.5L25.8 25.8M46.2 46.2L54.5 54.5M54.5 17.5L46.2 25.8M25.8 46.2L17.5 54.5" />
           </g>
         </svg>
-        <p className="preloader-text" ref={textRef}>ZEEMAC GROUP</p>
+        <p className="preloader-text" ref={textRef}>Zeemac Filters</p>
         <div className="preloader-bar"><span id="preloader-progress" ref={progressRef}></span></div>
       </div>
     </div>

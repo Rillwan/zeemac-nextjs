@@ -14,7 +14,7 @@ import { prisma } from "@/lib/prisma";
 export const metadata = {
   title: "About Us",
   description:
-    "Learn about Zeemac Group — our story, vision, mission and values as a supplier of marine and industrial filtration solutions.",
+    "Learn about Zeemac Filters — our story, vision, mission and values as a supplier of marine and industrial filtration solutions.",
 };
 
 const VALUES = [
@@ -58,7 +58,7 @@ export default async function AboutPage() {
               Your Trusted Partner for Filtration &amp; Marine Solutions
             </Reveal>
             <Reveal as="p" className="mt-4 text-slate-500 max-w-md" delay={0.1}>
-              At Zeemac Group, we provide reliable filtration and marine
+              At Zeemac Filters, we provide reliable filtration and marine
               industrial products designed to support the performance,
               efficiency and longevity of critical equipment.
             </Reveal>
@@ -83,7 +83,7 @@ export default async function AboutPage() {
               src={content?.image || "/images/about.jpeg"}
               alt={
                 content?.imageAlt ||
-                "Zeemac Group filtration products and marine equipment"
+                "Zeemac Filters filtration products and marine equipment"
               }
               width={640}
               height={480}
@@ -133,7 +133,7 @@ export default async function AboutPage() {
               Our Values
             </Reveal>
             <Reveal as="h2" className="section-title mt-3" delay={0.05}>
-              What Drives Zeemac Group
+              What Drives Zeemac Filters
             </Reveal>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -161,7 +161,7 @@ export default async function AboutPage() {
           <Reveal as="div" className="cta-banner">
             <Image
               src="https://placehold.co/900x420/123d8a/ffffff?text=Zeemac+Group"
-              alt="Zeemac Group filtration solutions"
+              alt="Zeemac Filters filtration solutions"
               fill
               className="cta-bg-img"
             />

@@ -9,32 +9,32 @@ const jakarta = Plus_Jakarta_Sans({
   display: 'swap'
 });
 
-const SITE_URL = 'https://www.zeemacgroup.com';
+const SITE_URL = 'https://www.zeemacfilters.com';
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Zeemac Group | Marine & Industrial Filtration Solutions',
-    template: '%s | Zeemac Group'
+    default: 'Zeemac Filters | Marine & Industrial Filtration Solutions',
+    template: '%s | Zeemac Filters'
   },
   icons:{
     icon: '/images/logo.png',
   },
-  description: 'Zeemac Group supplies a comprehensive range of filtration products for marine engines, industrial machinery, hydraulic systems, compressors, power plants and other demanding applications.',
-  keywords: ['marine filters', 'industrial filtration', 'hydraulic filters', 'oil filters', 'fuel filters', 'air filters', 'water filters', 'compressor filters', 'Zeemac Group', 'UAE filtration supplier'],
-  authors: [{ name: 'Zeemac Group' }],
+  description: 'Zeemac Filters supplies a comprehensive range of filtration products for marine engines, industrial machinery, hydraulic systems, compressors, power plants and other demanding applications.',
+  keywords: ['marine filters', 'industrial filtration', 'hydraulic filters', 'oil filters', 'fuel filters', 'air filters', 'water filters', 'compressor filters', 'Zeemac Filters', 'UAE filtration supplier'],
+  authors: [{ name: 'Zeemac Filters' }],
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
-    title: 'Zeemac Group | Marine & Industrial Filtration Solutions',
+    title: 'Zeemac Filters | Marine & Industrial Filtration Solutions',
     description: 'Reliable filters for marine, industrial and heavy-duty applications. Quality products, trusted brands, industrial expertise — UAE.',
     url: SITE_URL,
-    siteName: 'Zeemac Group',
+    siteName: 'Zeemac Filters',
     images: [{ url: 'https://placehold.co/1200x630/123d8a/ffffff?text=Zeemac+Group', width: 1200, height: 630 }]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Zeemac Group | Marine & Industrial Filtration Solutions',
+    title: 'Zeemac Filters | Marine & Industrial Filtration Solutions',
     description: 'Reliable filters for marine, industrial and heavy-duty applications — UAE.',
     images: ['https://placehold.co/1200x630/123d8a/ffffff?text=Zeemac+Group']
   }
@@ -43,7 +43,7 @@ export const metadata = {
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'Zeemac Group',
+  name: 'Zeemac Filters',
   url: SITE_URL,
   description: 'Supplier of marine and industrial filtration products including engine, oil, fuel, air, hydraulic, water/RO and compressor filters.',
   address: {
@@ -54,7 +54,7 @@ const organizationSchema = {
   contactPoint: {
     '@type': 'ContactPoint',
     telephone: '+971-4-591-3307',
-    email: 'sales@zeemacgroup.com',
+    email: 'sales@zeemacfilters.com',
     contactType: 'sales',
     areaServed: 'AE'
   }
@@ -63,7 +63,7 @@ const organizationSchema = {
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'Zeemac Group',
+  name: 'Zeemac Filters',
   url: SITE_URL
 };
 

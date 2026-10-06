@@ -55,9 +55,9 @@ export default async function ProductDetailPage({ params }) {
     include: { brand: true, category: true, images: { orderBy: { order: 'asc' }, take: 1 } }
   });
 
-  const enquiryText = `Hi Zeemac Group, I'd like to enquire about: ${product.name}${product.partNumber ? ` (Part No: ${product.partNumber})` : ''}`;
+  const enquiryText = `Hi Zeemac Filters, I'd like to enquire about: ${product.name}${product.partNumber ? ` (Part No: ${product.partNumber})` : ''}`;
 
-  const SITE_URL = 'https://www.zeemacgroup.com';
+  const SITE_URL = 'https://www.zeemacfilters.com';
   const productSchema = {
     '@context': 'https://schema.org',
     '@type': 'Product',

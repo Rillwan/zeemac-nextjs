@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 
-const SITE_URL = 'https://www.zeemacgroup.com';
+const SITE_URL = 'https://www.zeemacfilters.com';
 
 export default async function sitemap() {
   const [products, categories, brands] = await Promise.all([

@@ -53,10 +53,10 @@ export default function SiteContentForm({ section, initialContent }) {
       {error && <p className="text-red-500 text-sm">{error}</p>}
 
       <div className="card space-y-4">
-        <div>
+        {/* <div>
           <label className="text-xs font-semibold text-slate-500 block mb-1">Eyebrow (small label)</label>
           <input className="finder-input-light" value={form.eyebrow} onChange={update('eyebrow')} />
-        </div>
+        </div> */}
         <div>
           <label className="text-xs font-semibold text-slate-500 block mb-1">Heading</label>
           <input className="finder-input-light" value={form.heading} onChange={update('heading')} />

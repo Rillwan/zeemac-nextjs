@@ -1,4 +1,4 @@
-const SITE_URL = 'https://www.zeemacgroup.com';
+const SITE_URL = 'https://www.zeemacfilters.com';
 
 export default function robots() {
   return {

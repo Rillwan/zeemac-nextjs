@@ -9,7 +9,7 @@ export default function CTA() {
         <Reveal as="div" className="cta-banner">
           <Image
             src="https://placehold.co/900x420/123d8a/ffffff?text=Zeemac+Group"
-            alt="Zeemac Group filtration solutions"
+            alt="Zeemac Filters filtration solutions"
             fill
             sizes="(max-width: 1280px) 100vw, 1280px"
             className="cta-bg-img"

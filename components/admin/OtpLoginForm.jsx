@@ -85,7 +85,7 @@ export default function OtpLoginForm() {
             name="email"
             autoComplete="email"
             required
-            placeholder="admin@zeemacgroup.com"
+            placeholder="admin@zeemacfilters.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full border border-slate-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-brand"
