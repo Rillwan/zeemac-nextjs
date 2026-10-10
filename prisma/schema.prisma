@@ -119,5 +119,8 @@ model SiteContent {
   image        String?
   imageAlt     String?
   tagline      String?            // comma-separated, Hero-ന് മാത്രം
+  seoTitle        String?
+  metaDescription String?
+  focusKeyword    String?
   updatedAt    DateTime @updatedAt
 }

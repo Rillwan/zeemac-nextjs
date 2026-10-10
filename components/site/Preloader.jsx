@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import gsap from 'gsap';
 
 export default function Preloader() {
@@ -8,7 +9,10 @@ export default function Preloader() {
   const markRef = useRef(null);
   const textRef = useRef(null);
   const progressRef = useRef(null);
+  const pathname = usePathname();
+  const isFirstRun = useRef(true);
 
+  // ആദ്യത്തെ page load — പൂർണ്ണമായ draw animation
   useEffect(() => {
     const preloader = preloaderRef.current;
     const mark = markRef.current;
@@ -31,8 +35,29 @@ export default function Preloader() {
         }
       }, '+=0.15');
 
-    return () => tl.kill();
+    return () => tl.revert();
   }, []);
+
+  // ഇനി മുതൽ ഉള്ള navigations (pathname മാറുമ്പോൾ) — ചെറിയ transition flash
+  useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false; // ആദ്യത്തെ load-ൽ ഇത് skip ചെയ്യുക, മുകളിലെ effect മതി
+      return;
+    }
+
+    const preloader = preloaderRef.current;
+    if (!preloader) return;
+
+    preloader.style.display = 'flex';
+    gsap.set(preloader, { yPercent: 0 });
+    gsap.to(preloader, {
+      yPercent: -100,
+      duration: 0.6,
+      ease: 'power3.inOut',
+      delay: 0.35,
+      onComplete: () => { preloader.style.display = 'none'; }
+    });
+  }, [pathname]);
 
   return (
     <div id="preloader" ref={preloaderRef} aria-hidden="true">

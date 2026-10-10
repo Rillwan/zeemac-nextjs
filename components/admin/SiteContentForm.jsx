@@ -59,15 +59,15 @@ export default function SiteContentForm({ section, initialContent }) {
         </div> */}
         <div>
           <label className="text-xs font-semibold text-slate-500 block mb-1">Heading</label>
-          <input className="finder-input-light" value={form.heading} onChange={update('heading')} />
+          <input className="finder-input-light" value={form.heading} onChange={update('heading')} placeholder='Complete Heavy' />
         </div>
         <div>
           <label className="text-xs font-semibold text-slate-500 block mb-1">Heading — Line 2 (Hero only)</label>
-          <input className="finder-input-light" value={form.headingLine2} onChange={update('headingLine2')} />
+          <input className="finder-input-light" value={form.headingLine2} onChange={update('headingLine2')} placeholder='Filtration Solutions' />
         </div>
         <div>
           <label className="text-xs font-semibold text-slate-500 block mb-1">Paragraph 1</label>
-          <textarea rows={3} className="finder-input-light" value={form.body1} onChange={update('body1')} />
+          <textarea rows={3} className="finder-input-light" value={form.body1} onChange={update('body1')} placeholder='Zeemac supplies a comprehensive range of filtration products for marine engines, industrial machinery, hydraulic systems, compressors, power plants and other demanding applications.' />
         </div>
         <div>
           <label className="text-xs font-semibold text-slate-500 block mb-1">Paragraph 2 (About only)</label>

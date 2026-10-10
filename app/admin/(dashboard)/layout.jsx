@@ -6,7 +6,8 @@ const TABS = [
   { href: '/admin', label: 'Products' },
   { href: '/admin/categories', label: 'Categories' },
   { href: '/admin/brands', label: 'Brands' },
-  { href: '/admin/content', label: 'Page content' }
+  { href: '/admin/content', label: 'Page content' },
+  { href: '/admin/seo', label: 'SEO' }
 ];
 
 export default async function DashboardLayout({ children }) {

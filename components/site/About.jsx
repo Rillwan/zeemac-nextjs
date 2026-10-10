@@ -25,7 +25,7 @@ export default async function About() {
 
         <div>
           <Reveal as="p" className="eyebrow">About Us</Reveal>
-          <Reveal as="h2" className="section-title mt-3" delay={0.05}> {content?.heading || 'Your Trusted Partner for Filtration &amp; Marine Solutions'} </Reveal>
+          <Reveal as="h2" className="section-title mt-3" delay={0.05}> {content?.heading || 'Your Trusted Partner for Filtration & Marine Solutions'} </Reveal>
           <Reveal as="p" className="mt-4 text-slate-500 max-w-md" delay={0.1}>
             {content?.body1 || 'At Zeemac Filters, we provide reliable filtration and marine industrial products designed to support the performance, efficiency and longevity of critical equipment.'}
           </Reveal>

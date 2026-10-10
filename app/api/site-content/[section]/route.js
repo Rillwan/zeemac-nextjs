@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+const ALLOWED_FIELDS = [
+  'eyebrow', 'heading', 'headingLine2', 'body1', 'body2', 'body3',
+  'image', 'imageAlt', 'tagline', 'seoTitle', 'metaDescription', 'focusKeyword'
+];
+
 export async function GET(request, { params }) {
   const { section } = await params;
   const content = await prisma.siteContent.findUnique({ where: { section } });
@@ -17,31 +22,20 @@ export async function PUT(request, { params }) {
     return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
   }
 
+  // Only touch fields that were actually sent in this request — so the
+  // SEO form (which only sends seoTitle/metaDescription/focusKeyword)
+  // never wipes out the Content form's fields, and vice versa.
+  const data = {};
+  for (const field of ALLOWED_FIELDS) {
+    if (Object.prototype.hasOwnProperty.call(body, field)) {
+      data[field] = body[field] || null;
+    }
+  }
+
   const content = await prisma.siteContent.upsert({
     where: { section },
-    update: {
-      eyebrow: body.eyebrow || null,
-      heading: body.heading || null,
-      headingLine2: body.headingLine2 || null,
-      body1: body.body1 || null,
-      body2: body.body2 || null,
-      body3: body.body3 || null,
-      image: body.image || null,
-      imageAlt: body.imageAlt || null,
-      tagline: body.tagline || null
-    },
-    create: {
-      section,
-      eyebrow: body.eyebrow || null,
-      heading: body.heading || null,
-      headingLine2: body.headingLine2 || null,
-      body1: body.body1 || null,
-      body2: body.body2 || null,
-      body3: body.body3 || null,
-      image: body.image || null,
-      imageAlt: body.imageAlt || null,
-      tagline: body.tagline || null
-    }
+    update: data,
+    create: { section, ...data }
   });
 
   return NextResponse.json({ content });

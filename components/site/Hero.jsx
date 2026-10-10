@@ -74,7 +74,7 @@ export default function Hero({ data }) {
         <div className="realative z-1">
           {/* <p className="eyebrow">Reliable Filters for Marine, Industrial &amp; Heavy-Duty Applications</p> */}
           <h1 className="hero-title mt-4 text-4xl text-center md:text-start lg:text-6xl xl:text-7xl font-medium md:text-nowrap ">
-            <SplitHeadline text={data?.heading || 'Marine & Industrial'} className="text-brand-navy" />
+            <SplitHeadline text={data?.heading || 'Complete Heavy'} className="text-brand-navy" />
             <SplitHeadline text={data?.headingLine2 || 'Filtration Solutions'} className="text-brand" />
           </h1>
           <p className="mt-6 mx-auto md:ml-0 text-slate-600 text-center md:text-start text-[14px] max-w-md" data-hero-text>
