@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import Reveal from '@/components/site/Reveal';
 import { Send } from 'lucide-react';
+import { SITE_CONTENT_DEFAULTS } from '@/lib/siteContentDefaults';
 
 const WHATSAPP_NUMBER = '971045913307';
 
-export default function ProductFinder() {
+export default function ProductFinder({ data }) {
   const [form, setForm] = useState({
     name: '', company: '', email: '', phone: '',
     equipment: '', brand: '', partNumber: '', description: ''
@@ -37,10 +38,10 @@ export default function ProductFinder() {
     <section className="section-pad">
       <div className="max-w-5xl mx-auto px-6 lg:px-10">
         <Reveal as="div" className="finder-panel">
-          <p className="eyebrow eyebrow-light">Looking for a Specific Filter?</p>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-3">Can&apos;t find the product you&apos;re looking for?</h2>
+          <p className="eyebrow eyebrow-light">{data?.eyebrow || SITE_CONTENT_DEFAULTS.productfinder.eyebrow}</p>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-3">{data?.heading || SITE_CONTENT_DEFAULTS.productfinder.heading}</h2>
           <p className="text-[#C9DAF6] mt-3 max-w-lg">
-            Send us the part number, brand, equipment model or filter details, and our team will help you identify the right product.
+            {data?.body1 || SITE_CONTENT_DEFAULTS.productfinder.body1}
           </p>
 
           <form onSubmit={handleSubmit} className="mt-8 grid sm:grid-cols-2 gap-5">

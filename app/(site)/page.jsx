@@ -19,9 +19,9 @@ export async function generateMetadata() {
 }
 
 export default async function HomePage() {
-  const [heroContent, ctaContent] = await Promise.all([
+  const [heroContent, productFinderContent] = await Promise.all([
     prisma.siteContent.findUnique({ where: { section: 'hero' } }),
-    prisma.siteContent.findUnique({ where: { section: 'cta' } })
+    prisma.siteContent.findUnique({ where: { section: 'productfinder' } })
   ]);
 
   return (
@@ -33,7 +33,7 @@ export default async function HomePage() {
       <Brands />
       <Industries />
       <WhyChoose />
-      <ProductFinder />
+      <ProductFinder data={productFinderContent} />
       <CTA data={heroContent} />
     </>
   );

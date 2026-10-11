@@ -3,19 +3,19 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import SingleImageUploader from '@/components/admin/SingleImageUploader';
+import { SITE_CONTENT_FIELDS, SITE_CONTENT_DEFAULTS, FIELD_META } from '@/lib/siteContentDefaults';
 
 export default function SiteContentForm({ section, initialContent }) {
   const router = useRouter();
-  const [form, setForm] = useState({
-    eyebrow: initialContent?.eyebrow || '',
-    heading: initialContent?.heading || '',
-    headingLine2: initialContent?.headingLine2 || '',
-    body1: initialContent?.body1 || '',
-    body2: initialContent?.body2 || '',
-    body3: initialContent?.body3 || '',
-    image: initialContent?.image || '',
-    imageAlt: initialContent?.imageAlt || '',
-    tagline: initialContent?.tagline || ''
+  const fields = SITE_CONTENT_FIELDS[section] || [];
+  const defaults = SITE_CONTENT_DEFAULTS[section] || {};
+
+  const [form, setForm] = useState(() => {
+    const initial = {};
+    fields.forEach((key) => {
+      initial[key] = initialContent?.[key] || defaults[key] || '';
+    });
+    return initial;
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -49,46 +49,39 @@ export default function SiteContentForm({ section, initialContent }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 ">
+    <form onSubmit={handleSubmit} className="space-y-6 w-full">
       {error && <p className="text-red-500 text-sm">{error}</p>}
 
       <div className="card space-y-4">
-        {/* <div>
-          <label className="text-xs font-semibold text-slate-500 block mb-1">Eyebrow (small label)</label>
-          <input className="finder-input-light" value={form.eyebrow} onChange={update('eyebrow')} />
-        </div> */}
-        <div>
-          <label className="text-xs font-semibold text-slate-500 block mb-1">Heading</label>
-          <input className="finder-input-light" value={form.heading} onChange={update('heading')} placeholder='Complete Heavy' />
-        </div>
-        <div>
-          <label className="text-xs font-semibold text-slate-500 block mb-1">Heading — Line 2 (Hero only)</label>
-          <input className="finder-input-light" value={form.headingLine2} onChange={update('headingLine2')} placeholder='Filtration Solutions' />
-        </div>
-        <div>
-          <label className="text-xs font-semibold text-slate-500 block mb-1">Paragraph 1</label>
-          <textarea rows={3} className="finder-input-light" value={form.body1} onChange={update('body1')} placeholder='Zeemac supplies a comprehensive range of filtration products for marine engines, industrial machinery, hydraulic systems, compressors, power plants and other demanding applications.' />
-        </div>
-        <div>
-          <label className="text-xs font-semibold text-slate-500 block mb-1">Paragraph 2 (About only)</label>
-          <textarea rows={3} className="finder-input-light" value={form.body2} onChange={update('body2')} />
-        </div>
-        <div>
-          <label className="text-xs font-semibold text-slate-500 block mb-1">Paragraph 3 (About only)</label>
-          <textarea rows={3} className="finder-input-light" value={form.body3} onChange={update('body3')} />
-        </div>
-        <div>
-          <label className="text-xs font-semibold text-slate-500 block mb-1">Tagline points (Hero only — comma separated)</label>
-          <input className="finder-input-light" value={form.tagline} onChange={update('tagline')} placeholder="Quality Products, Trusted Brands, ..." />
-        </div>
-        <div>
-          <label className="text-xs font-semibold text-slate-500 block mb-1">Image</label>
-          <SingleImageUploader value={form.image} onChange={update('image')} />
-        </div>
-        <div>
-          <label className="text-xs font-semibold text-slate-500 block mb-1">Image Alt Text</label>
-          <input className="finder-input-light" value={form.imageAlt} onChange={update('imageAlt')} placeholder="Describe the image for SEO/accessibility" />
-        </div>
+        {fields.map((key) => {
+          const meta = FIELD_META[key];
+          if (!meta) return null;
+
+          if (meta.type === 'image') {
+            return (
+              <div key={key}>
+                <label className="text-xs font-semibold text-slate-500 block mb-1">{meta.label}</label>
+                <SingleImageUploader value={form[key]} onChange={update(key)} />
+              </div>
+            );
+          }
+
+          if (meta.type === 'textarea') {
+            return (
+              <div key={key}>
+                <label className="text-xs font-semibold text-slate-500 block mb-1">{meta.label}</label>
+                <textarea rows={3} className="finder-input-light" value={form[key]} onChange={update(key)} />
+              </div>
+            );
+          }
+
+          return (
+            <div key={key}>
+              <label className="text-xs font-semibold text-slate-500 block mb-1">{meta.label}</label>
+              <input className="finder-input-light" value={form[key]} onChange={update(key)} />
+            </div>
+          );
+        })}
       </div>
 
       <button type="submit" disabled={saving} className="btn-primary disabled:opacity-60">

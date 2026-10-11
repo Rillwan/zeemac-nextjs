@@ -1,10 +1,19 @@
-import { notFound } from 'next/navigation';
-import { prisma } from '@/lib/prisma';
-import SiteContentForm from '@/components/admin/SiteContentForm';
+import { notFound } from "next/navigation";
+import { prisma } from "@/lib/prisma";
+import SiteContentForm from "@/components/admin/SiteContentForm";
 
-const VALID_SECTIONS = { hero: 'Homepage Hero', about: 'About Section', cta: 'Quote CTA Banner' };
+const VALID_SECTIONS = {
+  hero: "Homepage Hero",
+  about: "About Section",
+  categories: "Categories Section",
+  brands: "Brands Section",
+  industries: "Industries Section",
+  whychoose: "Why Choose Us Section",
+  productfinder: "Product Finder Section",
+  cta: "Quote CTA Banner",
+};
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default async function EditContentPage({ params }) {
   const { section } = await params;
@@ -14,7 +23,9 @@ export default async function EditContentPage({ params }) {
 
   return (
     <div>
-      <h2 className="text-lg font-bold text-brand-navy mb-6">Edit: {VALID_SECTIONS[section]}</h2>
+      <h2 className="text-lg font-bold text-brand-navy mb-6">
+        Edit: {VALID_SECTIONS[section]}
+      </h2>
       <SiteContentForm section={section} initialContent={content} />
     </div>
   );

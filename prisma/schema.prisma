@@ -124,3 +124,14 @@ model SiteContent {
   focusKeyword    String?
   updatedAt    DateTime @updatedAt
 }
+
+model HomepageItem {
+  id          Int    @id @default(autoincrement())
+  section     String   // "categories" | "industries" | "whychoose"
+  icon        String   // ഒരു icon-ന്റെ പേര് (lib/icons.js-ലെ ICON_MAP-ൽ ഉള്ളത്)
+  title       String
+  description String
+  order       Int    @default(0)
+
+  @@index([section])
+}
