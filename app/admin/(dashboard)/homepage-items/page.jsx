@@ -48,7 +48,7 @@ export default async function HomepageItemsPage({ searchParams }) {
         </Link>
       </div>
 
-      <HomepageItemTable section={section} initialItems={items} />
+      <HomepageItemTable key={section} section={section} initialItems={items} />
     </div>
   );
 }

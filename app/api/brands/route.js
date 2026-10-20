@@ -34,6 +34,7 @@ export async function POST(request) {
       name: body.name.trim(),
       slug,
       logo: body.logo || null,
+      description: body.description || null,
       order: (last?.order ?? -1) + 1
     }
   });

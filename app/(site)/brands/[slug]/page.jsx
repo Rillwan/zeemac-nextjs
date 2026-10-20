@@ -14,7 +14,10 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   const brand = await getBrand(slug);
   if (!brand) return {};
-  return { title: brand.name, description: `Browse ${brand.name} filtration products from Zeemac Filters.` };
+  return {
+    title: brand.name,
+    description: brand.description || `Browse ${brand.name} filtration products from Zeemac Filters.`
+  };
 }
 
 export default async function BrandDetailPage({ params }) {
@@ -43,16 +46,32 @@ export default async function BrandDetailPage({ params }) {
     <div className="section-pad pt-32 lg:pt-40">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="flex items-center gap-4 mb-2">
+        <section className="flex flex-col sm:flex-row sm:items-center gap-6 mb-12">
           {brand.logo && (
-            <div className="w-16 h-16 rounded-xl border border-slate-200 flex items-center justify-center p-2">
-              <Image src={brand.logo} alt={brand.name} width={48} height={48} className="object-contain" />
+            <div className="w-28 h-28 sm:w-36 sm:h-36 shrink-0 rounded-2xl border border-slate-200 bg-white flex items-center justify-center p-4">
+              <Image
+                src={brand.logo}
+                alt={`${brand.name} logo`}
+                width={128}
+                height={128}
+                className="object-contain w-full h-full"
+              />
             </div>
           )}
-          <div>
+          <div className="max-w-2xl">
             <p className="eyebrow">Brand</p>
-            <h1 className="section-title mt-1">{brand.name}</h1>
+            <h1 className="section-title mt-2">{brand.name}</h1>
+            {brand.description && (
+              <p className="mt-3 text-slate-500 whitespace-pre-line">{brand.description}</p>
+            )}
           </div>
+        </section>
+
+        <div className="flex items-center justify-between border-t border-slate-100 pt-8 mb-6">
+          <h2 className="text-lg font-bold text-brand-navy">Products from {brand.name}</h2>
+          <span className="text-sm text-slate-400">
+            {products.length} product{products.length === 1 ? '' : 's'}
+          </span>
         </div>
 
         {products.length === 0 ? (
@@ -61,7 +80,7 @@ export default async function BrandDetailPage({ params }) {
             <p>No products from this brand yet.</p>
           </div>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
             {products.map((p) => <ProductCard product={p} key={p.id} />)}
           </div>
         )}

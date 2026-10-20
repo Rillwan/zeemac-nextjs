@@ -30,7 +30,8 @@ export async function PUT(request, { params }) {
     where: { id: brandId },
     data: {
       name: body.name.trim(),
-      logo: body.logo || null
+      logo: body.logo || null,
+      description: body.description || null
     }
   });
 

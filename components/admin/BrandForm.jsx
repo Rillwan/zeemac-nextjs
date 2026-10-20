@@ -10,7 +10,8 @@ export default function BrandForm({ initialBrand }) {
 
   const [form, setForm] = useState({
     name: initialBrand?.name || '',
-    logo: initialBrand?.logo || ''
+    logo: initialBrand?.logo || '',
+    description: initialBrand?.description || ''
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -51,6 +52,16 @@ export default function BrandForm({ initialBrand }) {
         <div>
           <label className="text-xs font-semibold text-slate-500 block mb-1">Name *</label>
           <input required className="finder-input-light" value={form.name} onChange={update('name')} />
+        </div>
+        <div>
+          <label className="text-xs font-semibold text-slate-500 block mb-1">Description</label>
+          <textarea
+            rows={4}
+            className="finder-input-light"
+            value={form.description}
+            onChange={update('description')}
+            placeholder="Short introduction about this brand"
+          />
         </div>
         <div>
           <label className="text-xs font-semibold text-slate-500 block mb-1">Logo</label>
