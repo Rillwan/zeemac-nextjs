@@ -66,7 +66,7 @@ export default function Footer() {
           <div className="space-y-4">
             <div className="footer-contact-item">
               <Phone className="w-4 h-4" />
-              <span>+971 4 591 3307</span>
+              <span>+971 4 330 1105</span>
             </div>
             <div className="footer-contact-item">
               <Mail className="w-4 h-4" />

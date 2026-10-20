@@ -1,6 +1,6 @@
 import { MessageCircle } from 'lucide-react';
 
-const WHATSAPP_NUMBER = '971045913307';
+const WHATSAPP_NUMBER = '971502986863';
 const WHATSAPP_MESSAGE = "Hi Zeemac Filters, I'd like to enquire about your filtration products";
 
 export default function WhatsAppButton() {
