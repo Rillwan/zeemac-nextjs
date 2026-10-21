@@ -94,7 +94,7 @@ export default function OtpLoginForm() {
           <button
             type="submit"
             disabled={loading || cooldown > 0}
-            className="btn-primary w-full justify-center disabled:opacity-60 disabled:bg-slate-300 disabled:shadow-none"
+            className="btn-primary w-full text-center !block items-center justify-center disabled:opacity-60 disabled:bg-slate-300 disabled:shadow-none"
           >
             {loading ? 'Sending…' : cooldown > 0 ? `Resend in ${cooldown}s` : 'Send code'}
           </button>
@@ -116,13 +116,13 @@ export default function OtpLoginForm() {
           />
           {info && <p className="text-brand text-sm">{info}</p>}
           {error && <p className="text-red-500 text-sm">{error}</p>}
-          <button type="submit" disabled={loading} className="btn-primary w-full justify-center disabled:opacity-60">
+          <button type="submit" disabled={loading} className="btn-primary !block items-center w-full justify-center disabled:opacity-60">
             {loading ? 'Verifying…' : 'Verify & sign in'}
           </button>
           <button
             type="button"
             onClick={() => { setStep('email'); setOtp(''); setError(''); setInfo(''); }}
-            className="text-xs text-slate-400 hover:text-brand w-full text-center"
+            className="text-xs  text-slate-400 hover:text-brand w-full text-center"
           >
             Use a different email
           </button>
