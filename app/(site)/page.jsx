@@ -9,6 +9,8 @@ import ProductFinder from '@/components/site/ProductFinder';
 import CTA from '@/components/site/CTA';
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata() {
   const hero = await prisma.siteContent.findUnique({ where: { section: 'hero' } });
   return {
