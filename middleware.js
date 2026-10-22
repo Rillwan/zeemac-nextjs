@@ -26,7 +26,7 @@ export async function middleware(request) {
   }
 
   // Admin-only API mutations (reads stay public where relevant, e.g. GET /api/products)
-  const adminApiPrefixes = ['/api/products', '/api/categories', '/api/brands', '/api/upload', '/api/site-content', '/api/homepage-items'];
+  const adminApiPrefixes = ['/api/products', '/api/categories', '/api/brands', '/api/upload', '/api/site-content', '/api/homepage-items', '/api/hero-slides'];
   const isMutatingMethod = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(request.method);
   const isProtectedApiMutation = adminApiPrefixes.some((p) => pathname.startsWith(p)) && isMutatingMethod;
 
@@ -43,6 +43,6 @@ export const config = {
   matcher: [
     '/admin/:path*',
     '/api/products/:path*', '/api/categories/:path*', '/api/brands/:path*',
-    '/api/upload/:path*', '/api/site-content/:path*', '/api/homepage-items/:path*'
+    '/api/upload/:path*', '/api/site-content/:path*', '/api/homepage-items/:path*', '/api/hero-slides/:path*'
   ]
 };

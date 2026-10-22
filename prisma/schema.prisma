@@ -136,3 +136,22 @@ model HomepageItem {
 
   @@index([section])
 }
+
+model HeroSlide {
+  id                  Int      @id @default(autoincrement())
+  eyebrow             String?
+  heading             String
+  headingLine2        String?
+  description         String?
+  tagline             String?
+  image               String?
+  imageAlt            String?
+  primaryButtonText   String?
+  primaryButtonLink   String?
+  secondaryButtonText String?
+  secondaryButtonLink String?
+  order               Int      @default(0)
+  isActive            Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}

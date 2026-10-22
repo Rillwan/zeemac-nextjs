@@ -81,6 +81,27 @@ async function main() {
     }
   }
 
+  const slideCount = await prisma.heroSlide.count();
+  if (slideCount === 0) {
+    const hero = await prisma.siteContent.findUnique({ where: { section: 'hero' } });
+    await prisma.heroSlide.create({
+      data: {
+        eyebrow: hero?.eyebrow || 'Reliable Filters for Marine, Industrial & Heavy-Duty Applications',
+        heading: hero?.heading || 'Marine & Industrial',
+        headingLine2: hero?.headingLine2 || 'Filtration Solutions',
+        description: hero?.body1 || 'Zeemac Filters supplies a comprehensive range of filtration products for marine engines, industrial machinery, hydraulic systems, compressors, power plants and other demanding applications.',
+        tagline: hero?.tagline || 'Quality Products, Trusted Brands, Industrial Expertise, UAE',
+        image: hero?.image || null,
+        imageAlt: hero?.imageAlt || 'Marine and industrial filtration products',
+        primaryButtonText: 'Explore Products',
+        primaryButtonLink: '/products',
+        secondaryButtonText: 'Request a Quote',
+        secondaryButtonLink: '#contact',
+        order: 0
+      }
+    });
+  }
+
   console.log(`Seeded ${CATEGORIES.length} categories, ${BRANDS.length} brands and homepage items.`);
 }
 

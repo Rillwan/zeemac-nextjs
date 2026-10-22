@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Pencil } from "lucide-react";
 
 const SECTIONS = [
-  { key: "hero", label: "Homepage Hero" },
   { key: "about", label: "About Section" },
   { key: "categories", label: "Categories Section" },
   { key: "brands", label: "Brands Section" },
