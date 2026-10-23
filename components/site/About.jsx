@@ -10,7 +10,7 @@ export default async function About() {
   });
 
   return (
-    <section id="about" className="section-pad">
+    <section id="about" className="pt-12 pb-20">
       <div className="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-2 gap-14 items-center">
         <Reveal as="div" className="about-image-wrap ">
           <Image

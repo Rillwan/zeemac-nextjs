@@ -115,7 +115,7 @@ function outroTimeline(slide) {
   });
 }
 
-export default function Hero({ slides }) {
+export default function Hero({ slides, brands = [] }) {
   const items = slides && slides.length > 0 ? slides : [FALLBACK_SLIDE];
   const count = items.length;
 
@@ -233,7 +233,7 @@ export default function Hero({ slides }) {
 
   return (
     <section
-      className="hero relative pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-40 lg:pb-24 overflow-hidden"
+      className="hero relative pt-24 pb-8 sm:pt-28 sm:pb-20 lg:pt-40 lg:pb-12 overflow-hidden"
       id="home"
       ref={heroRef}
       aria-roledescription="carousel"
@@ -262,7 +262,7 @@ export default function Hero({ slides }) {
                 ref={(el) => {
                   slideRefs.current[i] = el;
                 }}
-                className="col-start-1 row-start-1 grid lg:grid-cols-2 gap-14 items-center"
+                className="col-start-1 row-start-1 grid lg:grid-cols-2 gap-6 md:gap-14 items-center"
                 style={{ visibility: i === 0 ? "visible" : "hidden" }}
                 role="group"
                 aria-roledescription="slide"
@@ -374,6 +374,29 @@ export default function Hero({ slides }) {
             >
               <ChevronRight className="w-5 h-5" />
             </button>
+          </div>
+        )}
+        {brands.length > 0 && (
+          <div className="relative z-10 mt-12 flex items-center justify-center md:justify-start flex-col md:flex-row gap-x-8 gap-y-4 border-t border-slate-200/70 pt-6">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-800">
+              Brands we supply :
+            </span>
+            {brands.map((brand) => (
+              <a
+                key={brand.id}
+                href={`/brands/${brand.slug}`}
+                aria-label={brand.name}
+                className="relative h-[50px] w-[150px]"
+              >
+                <Image
+                  src={brand.logo}
+                  alt={`${brand.name} logo`}
+                  fill
+                  sizes="96px"
+                  className="object-contain"
+                />
+              </a>
+            ))}
           </div>
         )}
       </div>

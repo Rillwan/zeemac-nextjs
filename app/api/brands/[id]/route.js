@@ -31,7 +31,8 @@ export async function PUT(request, { params }) {
     data: {
       name: body.name.trim(),
       logo: body.logo || null,
-      description: body.description || null
+      description: body.description || null,
+      featured: Boolean(body.featured),
     }
   });
 

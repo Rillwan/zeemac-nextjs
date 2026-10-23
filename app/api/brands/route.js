@@ -35,7 +35,8 @@ export async function POST(request) {
       slug,
       logo: body.logo || null,
       description: body.description || null,
-      order: (last?.order ?? -1) + 1
+      order: (last?.order ?? -1) + 1,
+      featured: Boolean(body.featured),
     }
   });
 
