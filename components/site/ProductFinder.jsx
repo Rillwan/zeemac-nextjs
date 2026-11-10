@@ -35,7 +35,7 @@ export default function ProductFinder({ data }) {
   }
 
   return (
-    <section className="section-pad">
+    <section id="contact" className="section-pad">
       <div className="max-w-5xl mx-auto px-6 lg:px-10">
         <Reveal as="div" className="finder-panel">
           <p className="eyebrow eyebrow-light">{data?.eyebrow || SITE_CONTENT_DEFAULTS.productfinder.eyebrow}</p>

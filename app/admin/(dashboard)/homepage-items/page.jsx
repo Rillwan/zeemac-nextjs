@@ -7,6 +7,7 @@ const SECTIONS = [
   { key: "categories", label: "Category Cards" },
   { key: "industries", label: "Industries" },
   { key: "whychoose", label: "Why Choose Us" },
+  { key: "aboutpoints", label: "About Points" },
 ];
 
 export const metadata = { title: "Homepage Items" };

@@ -1,9 +1,12 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { FileText, ArrowRight, PackageSearch } from 'lucide-react';
+import { FileText, ArrowRight } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import ProductCard from '@/components/site/ProductCard';
+import ProductGallery from '@/components/site/ProductGallery';
+import Breadcrumbs from '@/components/site/Breadcrumbs';
+import { getAllSpecs } from '@/lib/specs';
+import { PRODUCT_WHATSAPP_NUMBER } from '@/lib/contact';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,9 +33,9 @@ export async function generateMetadata({ params }) {
 function DetailBlock({ label, value }) {
   if (!value) return null;
   return (
-    <div className="border-t border-slate-100 py-4">
-      <h3 className="text-sm font-bold text-brand-navy mb-1">{label}</h3>
-      <p className="text-sm text-slate-500 whitespace-pre-line">{value}</p>
+    <div className="detail-card">
+      <h3>{label}</h3>
+      <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">{value}</p>
     </div>
   );
 }
@@ -54,6 +57,12 @@ export default async function ProductDetailPage({ params }) {
     take: 4,
     include: { brand: true, category: true, images: { orderBy: { order: 'asc' }, take: 1 } }
   });
+
+  const { rows: specRows, notes: specNotes } = getAllSpecs(product.specifications);
+  const hasSpecs = specRows.length > 0 || specNotes.length > 0;
+  const hasDetails = Boolean(
+    product.fullDescription || product.applications || product.compatibleModels || product.crossReference
+  );
 
   const enquiryText = `Hi Zeemac Filters, I'd like to enquire about: ${product.name}${product.partNumber ? ` (Part No: ${product.partNumber})` : ''}`;
 
@@ -79,85 +88,117 @@ export default async function ProductDetailPage({ params }) {
     ]
   };
 
+  const crumbs = [
+    { label: 'Home', href: '/' },
+    { label: 'Products', href: '/products' },
+    ...(product.category ? [{ label: product.category.name, href: `/categories/${product.category.slug}` }] : []),
+    { label: product.name }
+  ];
+
   return (
-    <div className="section-pad pt-32 lg:pt-40">
+    <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <div className="max-w-6xl mx-auto px-6 lg:px-10">
-        <div className="grid lg:grid-cols-2 gap-12">
-          <div>
-            <div className="product-card-img mb-4" style={{ aspectRatio: '4 / 3' }}>
-              {product.images[0] ? (
-                <Image src={product.images[0].url} alt={product.name} fill className="object-cover" priority />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-slate-300">
-                  <PackageSearch className="w-10 h-10" />
-                </div>
+
+      <section className="page-hero pt-28 pb-12 lg:pt-36 lg:pb-16">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <Breadcrumbs items={crumbs} />
+
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
+            <ProductGallery images={product.images} name={product.name} badge={product.badge} />
+
+            <div>
+              <p className="section-eyebrow">{product.category?.name || 'Product'}</p>
+              <h1 className="section-title mt-3">{product.name}</h1>
+              <p className="text-sm text-slate-500 mt-3">
+                {[product.brand?.name, product.partNumber && `Part No: ${product.partNumber}`].filter(Boolean).join(' • ')}
+              </p>
+              {product.shortDescription && (
+                <p className="mt-5 text-slate-600 leading-relaxed">{product.shortDescription}</p>
               )}
+
+              <div className="mt-7 flex flex-wrap gap-3">
+                <a
+                  href={`https://wa.me/${PRODUCT_WHATSAPP_NUMBER}?text=${encodeURIComponent(enquiryText)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary"
+                >
+                  Request a Quote <ArrowRight className="w-4 h-4" />
+                </a>
+                {product.datasheetUrl && (
+                  <a href={product.datasheetUrl} target="_blank" rel="noopener noreferrer" className="btn-outline">
+                    <FileText className="w-4 h-4" /> Datasheet
+                  </a>
+                )}
+                {product.catalogueUrl && (
+                  <a href={product.catalogueUrl} target="_blank" rel="noopener noreferrer" className="btn-outline">
+                    <FileText className="w-4 h-4" /> Catalogue
+                  </a>
+                )}
+              </div>
             </div>
-            {product.images.length > 1 && (
-              <div className="grid grid-cols-4 gap-3">
-                {product.images.slice(1).map((img) => (
-                  <div key={img.id} className="product-card-img" style={{ aspectRatio: '1 / 1', marginBottom: 0 }}>
-                    <Image src={img.url} alt={product.name} fill className="object-cover" />
+          </div>
+        </div>
+      </section>
+
+      {(hasSpecs || hasDetails) && (
+        <section className="py-12 lg:py-16 bg-white">
+          <div className={`max-w-7xl mx-auto px-6 lg:px-10 grid gap-8 items-start ${hasSpecs && hasDetails ? 'lg:grid-cols-[1.3fr_1fr]' : ''}`}>
+            {hasDetails && (
+              <div className="grid gap-5">
+                <DetailBlock label="Full Description" value={product.fullDescription} />
+                <DetailBlock label="Applications" value={product.applications} />
+                <DetailBlock label="Compatible Models" value={product.compatibleModels} />
+                <DetailBlock label="Cross Reference" value={product.crossReference} />
+              </div>
+            )}
+
+            {hasSpecs && (
+              <div className="detail-card !p-0 overflow-hidden">
+                <h3 className="px-6 pt-6">Specifications</h3>
+                {specRows.length > 0 && (
+                  <div className="overflow-x-auto">
+                    <table className="spec-table">
+                      <tbody>
+                        {specRows.map((row, i) => (
+                          <tr key={`${row.label}-${i}`}>
+                            <th scope="row">{row.label}</th>
+                            <td>{row.value}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
-                ))}
+                )}
+                {specNotes.length > 0 && (
+                  <ul className="px-6 py-4 text-sm text-slate-600 list-disc list-inside space-y-1">
+                    {specNotes.map((line, i) => <li key={i}>{line}</li>)}
+                  </ul>
+                )}
               </div>
             )}
           </div>
+        </section>
+      )}
 
-          <div>
-            <p className="eyebrow">{product.category?.name || 'Product'}</p>
-            <h1 className="section-title mt-3">{product.name}</h1>
-            <p className="text-sm text-slate-400 mt-2">
-              {[product.brand?.name, product.partNumber && `Part No: ${product.partNumber}`].filter(Boolean).join(' • ')}
-            </p>
-            {product.shortDescription && <p className="mt-4 text-slate-500">{product.shortDescription}</p>}
-
-            <div className="mt-6 flex flex-wrap gap-3">
-              <a
-                href={`https://wa.me/971045913307?text=${encodeURIComponent(enquiryText)}`}
-                target="_blank"
-                rel="noopener"
-                className="btn-primary"
-              >
-                Request a Quote <ArrowRight className="w-4 h-4" />
-              </a>
-              {product.datasheetUrl && (
-                <a href={product.datasheetUrl} target="_blank" rel="noopener" className="btn-outline">
-                  <FileText className="w-4 h-4" /> Datasheet
-                </a>
-              )}
-              {product.catalogueUrl && (
-                <a href={product.catalogueUrl} target="_blank" rel="noopener" className="btn-outline">
-                  <FileText className="w-4 h-4" /> Catalogue
-                </a>
-              )}
-            </div>
-
-            <div className="mt-4">
-              <DetailBlock label="Full Description" value={product.fullDescription} />
-              <DetailBlock label="Specifications" value={product.specifications} />
-              <DetailBlock label="Applications" value={product.applications} />
-              <DetailBlock label="Compatible Models" value={product.compatibleModels} />
-              <DetailBlock label="Cross Reference" value={product.crossReference} />
-            </div>
-          </div>
-        </div>
-
-        {related.length > 0 && (
-          <div className="mt-20">
-            <h2 className="section-title mb-8">Related Products</h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {related.length > 0 && (
+        <section className="py-12 lg:py-16" style={{ background: 'linear-gradient(180deg, #F3F8FF 0%, #FFFFFF 100%)' }}>
+          <div className="max-w-7xl mx-auto px-6 lg:px-10">
+            <p className="section-eyebrow">You May Also Like</p>
+            <h2 className="section-title mt-3 mb-8">Related Products</h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {related.map((p) => <ProductCard product={p} key={p.id} />)}
             </div>
           </div>
-        )}
+        </section>
+      )}
 
-        <div className="mt-10">
+      <section className="pb-14 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <Link href="/products" className="btn-outline">← Back to All Products</Link>
         </div>
-      </div>
-    </div>
+      </section>
+    </>
   );
 }

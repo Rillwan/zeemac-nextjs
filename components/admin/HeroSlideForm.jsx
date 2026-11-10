@@ -15,6 +15,7 @@ export default function HeroSlideForm({ initialSlide }) {
     description: initialSlide?.description || '',
     tagline: initialSlide?.tagline || '',
     image: initialSlide?.image || '',
+    mobileImage: initialSlide?.mobileImage || '',
     imageAlt: initialSlide?.imageAlt || '',
     primaryButtonText: isEdit ? initialSlide.primaryButtonText || '' : 'Explore Products',
     primaryButtonLink: isEdit ? initialSlide.primaryButtonLink || '' : '/products',
@@ -66,10 +67,10 @@ export default function HeroSlideForm({ initialSlide }) {
         <h3 className="font-bold text-brand-navy">Text</h3>
         <div>
           <label className="text-xs font-semibold text-slate-500 block mb-1">Eyebrow (small label above the heading)</label>
-          <input disabled placeholder='not available' className="finder-input-light" value={form.eyebrow} onChange={update('eyebrow')} />
+          <input className="finder-input-light" value={form.eyebrow} onChange={update('eyebrow')} placeholder="Marine & Industrial Filtration Solutions" />
         </div>
         <div>
-          <label className="text-xs font-semibold text-slate-500 block mb-1">Heading — Line 1 *</label>
+          <label className="text-xs font-semibold text-slate-500 block mb-1">Heading — Lines 1-2 (navy, wraps automatically) *</label>
           <input required className="finder-input-light" value={form.heading} onChange={update('heading')} />
         </div>
         <div>
@@ -80,21 +81,20 @@ export default function HeroSlideForm({ initialSlide }) {
           <label className="text-xs font-semibold text-slate-500 block mb-1">Description</label>
           <textarea rows={4} className="finder-input-light" value={form.description} onChange={update('description')} />
         </div>
-        <div>
-          <label className="text-xs font-semibold text-slate-500 block mb-1">Tagline points (comma separated)</label>
-          <input
-            className="finder-input-light"
-            value={form.tagline}
-            onChange={update('tagline')}
-            placeholder="Quality Products, Trusted Brands, Industrial Expertise"
-          />
-        </div>
       </section>
 
       <section className="card space-y-4">
-        <h3 className="font-bold text-brand-navy">Image</h3>
-        <SingleImageUploader value={form.image} onChange={update('image')} />
-        <p className="text-xs text-slate-400">Landscape pictures about 1200 x 900 px look best. Every slide is cropped to the same shape.</p>
+        <h3 className="font-bold text-brand-navy">Images</h3>
+        <div>
+          <p className="text-sm font-semibold text-brand-navy mb-1">Desktop image</p>
+          <SingleImageUploader value={form.image} onChange={update('image')} />
+          <p className="text-xs text-slate-400 mt-2">Wide landscape picture, 1920 x 1080 px (16:9), under 300 KB. Keep the left 45% empty (sky or plain light area) because the heading appears there; put the products on the right.</p>
+        </div>
+        <div>
+          <p className="text-sm font-semibold text-brand-navy mb-1">Mobile image</p>
+          <SingleImageUploader value={form.mobileImage} onChange={update('mobileImage')} />
+          <p className="text-xs text-slate-400 mt-2">Tall portrait picture, 1080 x 1920 px (9:16), under 300 KB. Keep the top 55% empty (sky or plain light area) for the heading; products at the bottom. If you leave this empty, the desktop image is used on phones.</p>
+        </div>
         <div>
           <label className="text-xs font-semibold text-slate-500 block mb-1">Image Alt Text</label>
           <input

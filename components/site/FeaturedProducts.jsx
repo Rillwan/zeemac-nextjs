@@ -2,31 +2,41 @@ import { ArrowRight } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import Reveal from '@/components/site/Reveal';
 import ProductCard from '@/components/site/ProductCard';
+import { SITE_CONTENT_DEFAULTS } from '@/lib/siteContentDefaults';
 
 export default async function FeaturedProducts() {
-  const products = await prisma.product.findMany({
-    where: { featured: true, status: 'active' },
-    orderBy: { order: 'asc' },
-    take: 8,
-    include: { brand: true, category: true, images: { orderBy: { order: 'asc' }, take: 1 } }
-  });
+  const defaults = SITE_CONTENT_DEFAULTS.featured;
+  const [content, products] = await Promise.all([
+    prisma.siteContent.findUnique({ where: { section: 'featured' } }),
+    prisma.product.findMany({
+      where: { featured: true, status: 'active' },
+      orderBy: { order: 'asc' },
+      take: 8,
+      include: { brand: true, category: true, images: { orderBy: { order: 'asc' }, take: 1 } }
+    })
+  ]);
 
   if (products.length === 0) return null;
 
   return (
-    <section className="section-pad">
+    <section className="section-pad bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <div className="flex flex-wrap items-end justify-between gap-6 mb-12">
+        <div className="flex flex-wrap items-end justify-between gap-6 mb-10">
           <div className="max-w-xl">
-            <Reveal as="p" className="eyebrow">Featured Products</Reveal>
-            <Reveal as="h2" className="section-title mt-3" delay={0.05}>Popular Filtration Products</Reveal>
+            <Reveal as="p" className="section-eyebrow">{content?.eyebrow || defaults.eyebrow}</Reveal>
+            <Reveal as="h2" className="section-title mt-3" delay={0.05}>
+              {content?.heading || defaults.heading}
+            </Reveal>
+            <Reveal as="p" className="mt-4 text-black" delay={0.1}>
+              {content?.body1 || defaults.body1}
+            </Reveal>
           </div>
           <Reveal as="a" href="/products" className="btn-outline shrink-0" delay={0.1}>
             View All Products <ArrowRight className="w-4 h-4" />
           </Reveal>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {products.map((p, i) => (
             <Reveal as="div" key={p.id} delay={(i % 4) * 0.05}>
               <ProductCard product={p} />

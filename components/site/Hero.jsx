@@ -1,20 +1,29 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  Globe,
+  Headset,
+  ShieldCheck,
+  Truck,
+} from "lucide-react";
 import { SITE_CONTENT_DEFAULTS } from "@/lib/siteContentDefaults";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 const AUTOPLAY_MS = 6500;
 const DEFAULTS = SITE_CONTENT_DEFAULTS.hero;
 const ANIMATED =
-  ".eyebrow, .hero-title .char, [data-hero-text], [data-hero-actions], [data-hero-tagline], .hero-image-wrap";
+  ".hero-eyebrow, .hero-title .char, [data-hero-text], [data-hero-actions]";
+
+const TRUST_ITEMS = [
+  { icon: ShieldCheck, label: ["Genuine", "Manufacturers"] },
+  { icon: Truck, label: ["Wide Product", "Range"] },
+  { icon: Headset, label: ["Technical", "Support"] },
+  { icon: Globe, label: ["Global Supply", "Network"] },
+];
 
 const FALLBACK_SLIDE = {
   id: "default",
@@ -22,8 +31,8 @@ const FALLBACK_SLIDE = {
   heading: DEFAULTS.heading,
   headingLine2: DEFAULTS.headingLine2,
   description: DEFAULTS.body1,
-  tagline: DEFAULTS.tagline,
   image: DEFAULTS.image,
+  mobileImage: null,
   imageAlt: DEFAULTS.imageAlt,
   primaryButtonText: "Explore Products",
   primaryButtonLink: "/products",
@@ -56,7 +65,7 @@ function SplitHeadline({ text, className = "" }) {
 
 // Plays a slide's entrance. fromTo with explicit values means it always starts
 // from the same state, whatever a previous outro left behind.
-function introTimeline(slide, direction) {
+function introTimeline(slide) {
   const q = gsap.utils.selector(slide);
   const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
@@ -71,7 +80,11 @@ function introTimeline(slide, direction) {
     );
   };
 
-  add(".eyebrow", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 });
+  add(
+    ".hero-eyebrow",
+    { y: 20, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.6 },
+  );
   add(
     ".hero-title .char",
     { y: 46, opacity: 0, rotateX: 40 },
@@ -90,18 +103,6 @@ function introTimeline(slide, direction) {
     { y: 0, opacity: 1, duration: 0.6 },
     "-=0.4",
   );
-  add(
-    "[data-hero-tagline]",
-    { y: 20, opacity: 0 },
-    { y: 0, opacity: 1, duration: 0.5 },
-    "-=0.4",
-  );
-  add(
-    ".hero-image-wrap",
-    { scale: 0.92, opacity: 0, x: 50 * direction, y: 0 },
-    { scale: 1, opacity: 1, x: 0, y: 0, duration: 0.9 },
-    "-=0.6",
-  );
 
   return tl;
 }
@@ -115,12 +116,13 @@ function outroTimeline(slide) {
   });
 }
 
-export default function Hero({ slides, brands = [] }) {
+export default function Hero({ slides }) {
   const items = slides && slides.length > 0 ? slides : [FALLBACK_SLIDE];
   const count = items.length;
 
   const heroRef = useRef(null);
   const slideRefs = useRef([]);
+  const bgRefs = useRef([]);
   const currentRef = useRef(0);
   const busyRef = useRef(false);
   const touchStartX = useRef(null);
@@ -130,7 +132,7 @@ export default function Hero({ slides, brands = [] }) {
   const [paused, setPaused] = useState(false);
 
   const goTo = useCallback(
-    (target, direction = 1) => {
+    (target) => {
       if (busyRef.current) return;
       const from = currentRef.current;
       const to = ((target % count) + count) % count;
@@ -144,6 +146,24 @@ export default function Hero({ slides, brands = [] }) {
       currentRef.current = to;
       setCurrent(to);
 
+      // Background picture: old one fades out while the new one fades in and settles
+      const outBg = bgRefs.current[from];
+      const inBg = bgRefs.current[to];
+      if (outBg) {
+        gsap.to(outBg, {
+          autoAlpha: 0,
+          duration: 1.1,
+          ease: "power1.inOut",
+        });
+      }
+      if (inBg) {
+        gsap.fromTo(
+          inBg,
+          { autoAlpha: 0, scale: 1.06 },
+          { autoAlpha: 1, scale: 1, duration: 1.4, ease: "power2.out" },
+        );
+      }
+
       gsap
         .timeline({
           onComplete: () => {
@@ -153,7 +173,7 @@ export default function Hero({ slides, brands = [] }) {
         .add(outroTimeline(outSlide))
         .set(outSlide, { autoAlpha: 0 })
         .set(inSlide, { autoAlpha: 1 })
-        .add(introTimeline(inSlide, direction));
+        .add(introTimeline(inSlide));
     },
     [count],
   );
@@ -168,7 +188,7 @@ export default function Hero({ slides, brands = [] }) {
 
     let tl;
     const start = () => {
-      tl = introTimeline(first, 1);
+      tl = introTimeline(first);
       setReady(true);
     };
 
@@ -191,29 +211,9 @@ export default function Hero({ slides, brands = [] }) {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
       return undefined;
 
-    const timer = setTimeout(
-      () => goTo(currentRef.current + 1, 1),
-      AUTOPLAY_MS,
-    );
+    const timer = setTimeout(() => goTo(currentRef.current + 1), AUTOPLAY_MS);
     return () => clearTimeout(timer);
   }, [ready, paused, count, current, goTo]);
-
-  // Parallax on the picture while scrolling
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.to(".hero-image-wrap", {
-        yPercent: 8,
-        ease: "none",
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
-    }, heroRef);
-    return () => ctx.revert();
-  }, []);
 
   function handleTouchStart(e) {
     touchStartX.current = e.touches[0].clientX;
@@ -225,15 +225,15 @@ export default function Hero({ slides, brands = [] }) {
     touchStartX.current = null;
     if (Math.abs(dx) < 50) return;
     if (dx < 0) {
-      goTo(currentRef.current + 1, 1);
+      goTo(currentRef.current + 1);
     } else {
-      goTo(currentRef.current - 1, -1);
+      goTo(currentRef.current - 1);
     }
   }
 
   return (
     <section
-      className="hero relative pt-24 pb-8 sm:pt-28 sm:pb-20 lg:pt-40 lg:pb-12 overflow-hidden"
+      className="hero relative overflow-hidden flex flex-col min-h-[100svh] lg:h-[100svh] lg:min-h-[640px] lg:max-h-[1000px]"
       id="home"
       ref={heroRef}
       aria-roledescription="carousel"
@@ -247,14 +247,54 @@ export default function Hero({ slides, brands = [] }) {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-10 relative z-10">
-        <div className="grid" aria-live={paused ? "polite" : "off"}>
+      {/* Background pictures: one per slide, cross-fading.
+          Phones use the mobile picture (or the desktop one if none was uploaded), desktop uses the wide picture. */}
+      <div className="absolute inset-0 z-0" aria-hidden="true">
+        {items.map((slide, i) => {
+          const desktopSrc = slide.image || DEFAULTS.image;
+          const mobileSrc = slide.mobileImage || desktopSrc;
+          return (
+            <div
+              key={slide.id}
+              ref={(el) => {
+                bgRefs.current[i] = el;
+              }}
+              className="absolute inset-0"
+              style={{
+                visibility: i === 0 ? "visible" : "hidden",
+                opacity: i === 0 ? 1 : 0,
+              }}
+            >
+              <picture>
+                <source media="(min-width: 1024px)" srcSet={desktopSrc} />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={mobileSrc}
+                  alt=""
+                  loading={i === 0 ? "eager" : "lazy"}
+                  fetchPriority={i === 0 ? "high" : "auto"}
+                  decoding="async"
+                  className="absolute inset-0 h-full w-full object-cover object-[78%_bottom] lg:object-[75%_center]"
+                />
+              </picture>
+            </div>
+          );
+        })}
+        {/* Readability gradients: top on phones, left on desktop */}
+        <div className="absolute inset-x-0 top-0 h-[58%] bg-gradient-to-b from-white/90 via-white/55 to-transparent lg:hidden" />
+        <div className="absolute inset-y-0 left-0 w-[64%] bg-gradient-to-r from-white via-white/75 to-transparent hidden lg:block" />
+      </div>
+
+      {/* White Gradient Overlay */}
+      <div className="absolute lg:hidden inset-0 z-[1] bg-gradient-to-b from-white via-white/60 via-10% to-transparent" />
+
+      <div className="relative z-10 flex flex-1 flex-col w-full max-w-7xl mx-auto px-6 lg:px-10 pt-[88px] sm:pt-24 xl:pt-[104px] pb-6 lg:pb-7">
+        <div
+          className="grid flex-1 content-start lg:content-center"
+          aria-live={paused ? "polite" : "off"}
+        >
           {items.map((slide, i) => {
             const Heading = i === 0 ? "h1" : "h2";
-            const taglinePoints = (slide.tagline || "")
-              .split(",")
-              .map((t) => t.trim())
-              .filter(Boolean);
 
             return (
               <div
@@ -262,16 +302,20 @@ export default function Hero({ slides, brands = [] }) {
                 ref={(el) => {
                   slideRefs.current[i] = el;
                 }}
-                className="col-start-1 row-start-1 grid lg:grid-cols-2 gap-6 md:gap-14 items-center"
+                className="col-start-1 row-start-1 self-start lg:self-center"
                 style={{ visibility: i === 0 ? "visible" : "hidden" }}
                 role="group"
                 aria-roledescription="slide"
                 aria-label={`${i + 1} of ${count}`}
                 aria-hidden={i === current ? undefined : true}
               >
-                <div>
-                  {/* {slide.eyebrow && <p className="eyebrow">{slide.eyebrow}</p>} */}
-                  <Heading className="hero-title mt-4 text-4xl text-center md:text-start lg:text-6xl xl:text-7xl font-medium md:text-nowrap ">
+                <div className="lg:max-w-2xl">
+                  {slide.eyebrow && (
+                    <p className="hero-eyebrow max-w-[16rem] sm:max-w-none leading-relaxed">
+                      {slide.eyebrow}
+                    </p>
+                  )}
+                  <Heading className="hero-title mt-3 lg:mt-4 text-[2.2rem] leading-[1.12] sm:text-5xl lg:text-[clamp(2.4rem,7vh,3.6rem)] font-semibold text-start">
                     <SplitHeadline
                       text={slide.heading}
                       className="text-brand-navy"
@@ -283,7 +327,7 @@ export default function Hero({ slides, brands = [] }) {
                   </Heading>
                   {slide.description && (
                     <p
-                      className="mt-6 mx-auto md:ml-0 text-slate-600 text-center md:text-start text-[15px] md:text-lg max-w-md"
+                      className="mt-4 lg:mt-5 text-black text-start text-[15px] lg:text-base xl:text-lg max-w-sm sm:max-w-md"
                       data-hero-text
                     >
                       {slide.description}
@@ -291,7 +335,7 @@ export default function Hero({ slides, brands = [] }) {
                   )}
                   {(slide.primaryButtonText || slide.secondaryButtonText) && (
                     <div
-                      className="mt-8 flex items-center justify-center md:justify-start flex-wrap gap-4"
+                      className="mt-6 lg:mt-7 flex flex-col items-start sm:flex-row sm:items-center gap-3 sm:gap-4"
                       data-hero-actions
                     >
                       {slide.primaryButtonText && (
@@ -308,99 +352,69 @@ export default function Hero({ slides, brands = [] }) {
                           href={slide.secondaryButtonLink || "#"}
                           className="btn-outline"
                         >
-                          {slide.secondaryButtonText}
+                          {slide.secondaryButtonText}{" "}
+                          <ArrowRight className="w-4 h-4" />
                         </a>
                       )}
                     </div>
                   )}
-                  {taglinePoints.length > 0 && (
-                    <div
-                      className="hero-tagline mt-4 md:mt-8 justify-center md:justify-start"
-                      data-hero-tagline
-                    >
-                      {taglinePoints.map((point) => (
-                        <span key={point}>{point}</span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <div className="relative">
-                  <div className="hero-image-wrap relative aspect-[4/3.1]">
-                    <Image
-                      src={slide.image || DEFAULTS.image}
-                      alt={slide.imageAlt || slide.heading}
-                      fill
-                      sizes="(min-width: 1024px) 50vw, 100vw"
-                      priority={i === 0}
-                      className="object-cover"
-                    />
-                  </div>
                 </div>
               </div>
             );
           })}
         </div>
 
-        {count > 1 && (
-          <div className="relative z-10 mt-10 flex items-center gap-5">
-            <button
-              type="button"
-              aria-label="Previous slide"
-              onClick={() => goTo(currentRef.current - 1, -1)}
-              className="w-11 h-11 rounded-full border border-slate-200 bg-white/70 flex items-center justify-center text-brand-navy hover:bg-brand hover:text-white hover:border-brand transition-colors"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-
-            <div className="flex items-center gap-2">
-              {items.map((slide, i) => (
-                <button
-                  key={slide.id}
-                  type="button"
-                  aria-label={`Go to slide ${i + 1}`}
-                  aria-current={i === current ? "true" : undefined}
-                  onClick={() => goTo(i, i > currentRef.current ? 1 : -1)}
-                  className={`h-2 rounded-full transition-all duration-300 ${i === current ? "w-8 bg-brand" : "w-2 bg-brand/30 hover:bg-brand/60"}`}
-                />
-              ))}
-            </div>
-
-            <button
-              type="button"
-              aria-label="Next slide"
-              onClick={() => goTo(currentRef.current + 1, 1)}
-              className="w-11 h-11 rounded-full border border-slate-200 bg-white/70 flex items-center justify-center text-brand-navy hover:bg-brand hover:text-white hover:border-brand transition-colors"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
-        )}
-        {brands.length > 0 && (
-          <div className="relative z-10 mt-12 flex items-center justify-center md:justify-start flex-col md:flex-row gap-x-8 gap-y-4 border-t border-slate-200/70 pt-6">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-800">
-              Brands we supply :
-            </span>
-            {brands.map((brand) => (
-              <a
-                key={brand.id}
-                href={`/brands/${brand.slug}`}
-                aria-label={brand.name}
-                className="relative h-[50px] w-[150px]"
-              >
-                <Image
-                  src={brand.logo}
-                  alt={`${brand.name} logo`}
-                  fill
-                  sizes="96px"
-                  className="object-contain"
-                />
-              </a>
+        {/* Bottom row: trust strip (left, tablet/desktop) and slider controls */}
+        <div className="mt-auto pt-6 flex items-end justify-center lg:justify-between gap-6">
+          <div className="hidden md:flex items-center w-fit rounded-2xl bg-white/80 backdrop-blur px-6 py-3">
+            {TRUST_ITEMS.map(({ icon: Icon, label }) => (
+              <div key={label[0]} className="trust-item">
+                <Icon className="w-6 h-6 text-brand shrink-0" />
+                <span>
+                  {label[0]}
+                  <br />
+                  {label[1]}
+                </span>
+              </div>
             ))}
           </div>
-        )}
+
+          {count > 1 && (
+            <div className="flex items-center gap-4 md:ml-auto lg:ml-0">
+              <button
+                type="button"
+                aria-label="Previous slide"
+                onClick={() => goTo(currentRef.current - 1)}
+                className="hidden lg:flex w-10 h-10 rounded-full border border-slate-200 bg-white/80 items-center justify-center text-brand-navy hover:bg-brand hover:text-white hover:border-brand transition-colors"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+
+              <div className="flex items-center gap-2">
+                {items.map((slide, i) => (
+                  <button
+                    key={slide.id}
+                    type="button"
+                    aria-label={`Go to slide ${i + 1}`}
+                    aria-current={i === current ? "true" : undefined}
+                    onClick={() => goTo(i)}
+                    className={`h-2 rounded-full transition-all duration-300 ${i === current ? "w-8 bg-brand" : "w-2 bg-brand/40 hover:bg-brand/60"}`}
+                  />
+                ))}
+              </div>
+
+              <button
+                type="button"
+                aria-label="Next slide"
+                onClick={() => goTo(currentRef.current + 1)}
+                className="hidden lg:flex w-10 h-10 rounded-full border border-slate-200 bg-white/80 items-center justify-center text-brand-navy hover:bg-brand hover:text-white hover:border-brand transition-colors"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          )}
+        </div>
       </div>
-      <div className="hero-blob" aria-hidden="true"></div>
     </section>
   );
 }

@@ -10,7 +10,7 @@ export default async function CTA() {
   });
 
   return (
-    <section id="contact" className="section-pad pt-0">
+    <section id="cta" className="section-pad pt-0">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         <Reveal as="div" className="cta-banner">
           <Image

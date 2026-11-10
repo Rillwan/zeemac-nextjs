@@ -53,6 +53,7 @@ export async function PUT(request, { params }) {
       datasheetUrl: body.datasheetUrl || null,
       catalogueUrl: body.catalogueUrl || null,
       featured: Boolean(body.featured),
+      badge: body.badge === 'Best Seller' || body.badge === 'New' ? body.badge : null,
       status: body.status === 'draft' ? 'draft' : 'active',
       seoTitle: body.seoTitle || null,
       metaDescription: body.metaDescription || null,

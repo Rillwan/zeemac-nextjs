@@ -35,6 +35,7 @@ export async function POST(request) {
       slug,
       description: body.description || null,
       image: body.image || null,
+      icon: body.icon || null,
       order: (last?.order ?? -1) + 1
     }
   });

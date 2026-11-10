@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { PackageSearch } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
+import PageHero from '@/components/site/PageHero';
 import ProductCard from '@/components/site/ProductCard';
 
 export const dynamic = 'force-dynamic';
@@ -42,24 +43,33 @@ export default async function CategoryDetailPage({ params }) {
   };
 
   return (
-    <div className="section-pad pt-32 lg:pt-40">
+    <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <p className="eyebrow">Category</p>
-        <h1 className="section-title mt-3">{category.name}</h1>
-        {category.description && <p className="mt-4 text-slate-500 max-w-xl">{category.description}</p>}
+      <PageHero
+        eyebrow="Category"
+        title={category.name}
+        description={category.description}
+        breadcrumbs={[
+          { label: 'Home', href: '/' },
+          { label: 'Categories', href: '/categories' },
+          { label: category.name }
+        ]}
+      />
 
-        {products.length === 0 ? (
-          <div className="flex flex-col items-center text-center py-20 text-slate-400">
-            <PackageSearch className="w-10 h-10 mb-3" />
-            <p>No products in this category yet.</p>
-          </div>
-        ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
-            {products.map((p) => <ProductCard product={p} key={p.id} />)}
-          </div>
-        )}
-      </div>
-    </div>
+      <section className="py-10 lg:py-14 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          {products.length === 0 ? (
+            <div className="flex flex-col items-center text-center py-20 text-slate-400">
+              <PackageSearch className="w-10 h-10 mb-3" />
+              <p>No products in this category yet.</p>
+            </div>
+          ) : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {products.map((p) => <ProductCard product={p} key={p.id} />)}
+            </div>
+          )}
+        </div>
+      </section>
+    </>
   );
 }

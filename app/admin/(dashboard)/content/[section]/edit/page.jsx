@@ -11,6 +11,9 @@ const VALID_SECTIONS = {
   whychoose: "Why Choose Us Section",
   productfinder: "Product Finder Section",
   cta: "Quote CTA Banner",
+  popup: "First-visit Offer Popup",
+  featured: "Featured Products Section",
+  reviews: "Reviews Section",
 };
 
 export const dynamic = "force-dynamic";

@@ -1,12 +1,14 @@
 import Hero from "@/components/site/Hero";
+import BrandsStrip from "@/components/site/BrandsStrip";
 import About from "@/components/site/About";
 import Categories from "@/components/site/Categories";
 import FeaturedProducts from "@/components/site/FeaturedProducts";
-import Brands from "@/components/site/Brands";
 import Industries from "@/components/site/Industries";
 import WhyChoose from "@/components/site/WhyChoose";
+import Reviews from "@/components/site/Reviews";
 import ProductFinder from "@/components/site/ProductFinder";
 import CTA from "@/components/site/CTA";
+import OfferPopup from "@/components/site/OfferPopup";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -25,31 +27,55 @@ export async function generateMetadata() {
 }
 
 export default async function HomePage() {
-  const [slides, heroBrands, productFinderContent] = await Promise.all([
+  const [slides, stripBrands, productFinderContent, popupRow] = await Promise.all([
     prisma.heroSlide.findMany({
       where: { isActive: true },
       orderBy: { order: "asc" },
     }),
     prisma.brand.findMany({
-      where: { featured: true, logo: { not: null } },
+      where: { logo: { not: null } },
       orderBy: [{ order: "asc" }, { id: "asc" }],
-      take: 6,
+      take: 20,
       select: { id: true, name: true, slug: true, logo: true },
     }),
     prisma.siteContent.findUnique({ where: { section: "productfinder" } }),
+    prisma.siteContent.findUnique({ where: { section: "popup" } }),
   ]);
+
+  const popup =
+    popupRow && popupRow.isActive && popupRow.heading
+      ? {
+          eyebrow: popupRow.eyebrow || "",
+          heading: popupRow.heading,
+          body: popupRow.body1 || "",
+          terms: popupRow.body2 || "",
+          image: popupRow.image || "",
+          imageAlt: popupRow.imageAlt || "",
+          primaryText: popupRow.tagline || "Claim Your Discount",
+          primaryLink: popupRow.body3 || "#contact",
+          secondaryText: popupRow.headingLine2 || "",
+        }
+      : null;
 
   return (
     <>
-      <Hero slides={slides} brands={heroBrands} />
+      <Hero slides={slides} />
+      <BrandsStrip brands={stripBrands} />
       <About />
       <Categories />
       <FeaturedProducts />
-      <Brands />
       <Industries />
       <WhyChoose />
+      <Reviews />
       <ProductFinder data={productFinderContent} />
       <CTA data={slides} />
+      {popup && (
+        <OfferPopup
+          data={popup}
+          version={String(popupRow.updatedAt.getTime())}
+          intervalMinutes={popupRow.intervalMinutes ?? 15}
+        />
+      )}
     </>
   );
 }

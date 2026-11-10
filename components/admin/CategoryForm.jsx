@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import SingleImageUploader from '@/components/admin/SingleImageUploader';
+import { ICON_MAP, ICON_OPTIONS } from '@/lib/icons';
 
 export default function CategoryForm({ initialCategory }) {
   const router = useRouter();
@@ -11,7 +12,8 @@ export default function CategoryForm({ initialCategory }) {
   const [form, setForm] = useState({
     name: initialCategory?.name || '',
     description: initialCategory?.description || '',
-    image: initialCategory?.image || ''
+    image: initialCategory?.image || '',
+    icon: initialCategory?.icon || 'Filter'
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -58,7 +60,21 @@ export default function CategoryForm({ initialCategory }) {
           <textarea rows={3} className="finder-input-light" value={form.description} onChange={update('description')} />
         </div>
         <div>
-          <label className="text-xs font-semibold text-slate-500 block mb-1">Image</label>
+          <label className="text-xs font-semibold text-slate-500 block mb-1">Icon (small circle on the homepage card)</label>
+          <div className="flex items-center gap-3">
+            <span className="about-icon">
+              {(() => {
+                const Icon = ICON_MAP[form.icon] || ICON_MAP.Filter;
+                return <Icon className="w-6 h-6" />;
+              })()}
+            </span>
+            <select className="finder-input-light" value={form.icon} onChange={update('icon')}>
+              {ICON_OPTIONS.map((name) => <option key={name} value={name}>{name}</option>)}
+            </select>
+          </div>
+        </div>
+        <div>
+          <label className="text-xs font-semibold text-slate-500 block mb-1">Image (product photo with white or transparent background, shown on the card)</label>
           <SingleImageUploader value={form.image} onChange={update('image')} />
         </div>
       </div>

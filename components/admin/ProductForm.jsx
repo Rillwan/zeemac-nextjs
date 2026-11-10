@@ -9,7 +9,7 @@ const EMPTY = {
   name: '', partNumber: '', brandId: '', categoryId: '', subcategory: '',
   shortDescription: '', fullDescription: '', specifications: '', applications: '',
   compatibleModels: '', crossReference: '', datasheetUrl: '', catalogueUrl: '',
-  featured: false, status: 'active', seoTitle: '', metaDescription: '', focusKeyword: '',
+  featured: false, badge: '', status: 'active', seoTitle: '', metaDescription: '', focusKeyword: '',
   images: []
 };
 
@@ -24,6 +24,7 @@ export default function ProductForm({ initialProduct }) {
           ...initialProduct,
           brandId: initialProduct.brandId ?? '',
           categoryId: initialProduct.categoryId ?? '',
+          badge: initialProduct.badge ?? '',
           images: (initialProduct.images || []).map((img) => img.url)
         }
       : EMPTY
@@ -113,6 +114,14 @@ export default function ProductForm({ initialProduct }) {
             <select className="finder-input-light w-auto" value={form.status} onChange={update('status')}>
               <option value="active">Active</option>
               <option value="draft">Draft</option>
+            </select>
+          </label>
+          <label className="flex items-center gap-2 text-sm font-medium text-brand-navy">
+            Badge
+            <select className="finder-input-light w-auto" value={form.badge || ''} onChange={update('badge')}>
+              <option value="">None</option>
+              <option value="Best Seller">Best Seller</option>
+              <option value="New">New</option>
             </select>
           </label>
         </div>

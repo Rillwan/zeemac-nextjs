@@ -31,7 +31,8 @@ export async function PUT(request, { params }) {
     data: {
       name: body.name.trim(),
       description: body.description || null,
-      image: body.image || null
+      image: body.image || null,
+      icon: body.icon || null
     }
   });
 

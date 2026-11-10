@@ -9,6 +9,9 @@ const SECTIONS = [
   { key: "whychoose", label: "Why Choose Us Section" },
   { key: "productfinder", label: "Product Finder Section" },
   { key: "cta", label: "Quote CTA Banner" },
+  { key: "popup", label: "First-visit Offer Popup" },
+  { key: "featured", label: "Featured Products Section" },
+  { key: "reviews", label: "Reviews Section" },
 ];
 
 export const metadata = { title: "Site Content" };

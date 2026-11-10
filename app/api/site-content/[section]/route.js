@@ -32,6 +32,16 @@ export async function PUT(request, { params }) {
     }
   }
 
+  if (Object.prototype.hasOwnProperty.call(body, 'isActive')) {
+    data.isActive = body.isActive === true;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(body, 'intervalMinutes')) {
+    const raw = typeof body.intervalMinutes === 'string' ? body.intervalMinutes.trim() : body.intervalMinutes;
+    const n = raw === '' || raw === null || raw === undefined ? NaN : Number(raw);
+    data.intervalMinutes = Number.isFinite(n) && n >= 0 ? Math.min(Math.trunc(n), 43200) : null;
+  }
+
   const content = await prisma.siteContent.upsert({
     where: { section },
     update: data,
