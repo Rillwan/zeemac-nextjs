@@ -587,6 +587,8 @@ body.nav-open {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  max-width: 300px;
+  margin: auto;
   height: 100%;
   padding: 14px;
   background: #fff;
@@ -604,6 +606,7 @@ body.nav-open {
 /* Phones: picture on the left, details on the right, buttons across the full card width underneath */
 .product-card-main {
   display: flex;
+  flex-direction: column;
   flex: 1;
   gap: 14px;
   min-width: 0;
@@ -613,8 +616,8 @@ body.nav-open {
   position: relative;
   display: block;
   flex-shrink: 0;
-  width: 36%;
-  max-width: 150px;
+  width: 100%;
+  /* max-width: 150px; */
   aspect-ratio: 1 / 1;
   align-self: flex-start;
   border-radius: 12px;
