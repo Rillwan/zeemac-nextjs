@@ -5,9 +5,8 @@ import Reveal from '@/components/site/Reveal';
 import { Send } from 'lucide-react';
 import { SITE_CONTENT_DEFAULTS } from '@/lib/siteContentDefaults';
 
-const WHATSAPP_NUMBER = '971045913307';
 
-export default function ProductFinder({ data }) {
+export default function ProductFinder({ data, whatsappNumber }) {
   const [form, setForm] = useState({
     name: '', company: '', email: '', phone: '',
     equipment: '', brand: '', partNumber: '', description: ''
@@ -31,7 +30,7 @@ export default function ProductFinder({ data }) {
       form.description && `Requirement: ${form.description}`
     ].filter(Boolean).join('\n');
 
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines)}`, '_blank', 'noopener');
+    window.open(`https://wa.me/${String(whatsappNumber || '').replace(/\D/g, '')}?text=${encodeURIComponent(lines)}`, '_blank', 'noopener');
   }
 
   return (

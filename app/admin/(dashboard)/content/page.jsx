@@ -12,6 +12,7 @@ const SECTIONS = [
   { key: "popup", label: "First-visit Offer Popup" },
   { key: "featured", label: "Featured Products Section" },
   { key: "reviews", label: "Reviews Section" },
+  { key: "oilbattery", label: "Oil & Battery (home section and page)" },
 ];
 
 export const metadata = { title: "Site Content" };

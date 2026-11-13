@@ -9,13 +9,14 @@ const FOOTER_LINKS = [
   { href: "#home", label: "Home" },
   { href: "/about", label: "About Us" },
   { href: "/products", label: "Products" },
+  { href: "/oil-battery", label: "Oil & Battery" },
   { href: "/categories", label: "Categories" },
   { href: "/brands", label: "Brands" },
   { href: "#industries", label: "Industries" },
-  { href: "#contact", label: "Contact Us" },
+  { href: "/contact", label: "Contact Us" },
 ];
 
-export default function Footer() {
+export default function Footer({ settings }) {
   const pathname = usePathname();
   const path = pathname || "/";
   const resolveHref = (href) =>
@@ -66,15 +67,17 @@ export default function Footer() {
           <div className="space-y-4">
             <div className="footer-contact-item">
               <Phone className="w-4 h-4" />
-              <span>+971 4 330 1105</span>
+              <a href={`tel:${settings.phone.replace(/[^\d+]/g, "")}`}>
+                {settings.phone}
+              </a>
             </div>
             <div className="footer-contact-item">
               <Mail className="w-4 h-4" />
-              <span>sales@zeemacfilters.com</span>
+              <a href={`mailto:${settings.email}`}>{settings.email}</a>
             </div>
             <div className="footer-contact-item">
               <MapPin className="w-4 h-4" />
-              <span>Dubai, UAE</span>
+              <span className="whitespace-pre-line">{settings.address}</span>
             </div>
           </div>
         </div>

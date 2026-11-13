@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, ArrowRight, ChevronDown, Search } from "lucide-react";
 import Image from "next/image";
 
-const SECTION_IDS = ["home", "industries", "contact"];
+const SECTION_IDS = ["home", "industries"];
 
 export default function Header({ categories = [], industries = [] }) {
   const pathname = usePathname();
@@ -29,9 +29,10 @@ export default function Header({ categories = [], industries = [] }) {
     path.startsWith("/products") ||
     path.startsWith("/categories") ||
     path.startsWith("/brands");
+  const isOilBattery = path.startsWith("/oil-battery");
   const isIndustries = path === "/" && activeId === "industries";
   const isAbout = path.startsWith("/about");
-  const isContact = path === "/" && activeId === "contact";
+  const isContact = path.startsWith("/contact");
 
   useEffect(() => {
     const onScroll = () => {
@@ -140,7 +141,7 @@ export default function Header({ categories = [], industries = [] }) {
           </Link>
 
           <nav
-            className="hidden xl:flex items-center gap-8"
+            className="hidden xl:flex items-center gap-6 2xl:gap-8"
             aria-label="Primary"
           >
             <Link
@@ -178,6 +179,13 @@ export default function Header({ categories = [], industries = [] }) {
                 </div>
               </div>
             </div>
+
+            <Link
+              href="/oil-battery"
+              className={`nav-link ${isOilBattery ? "is-active" : ""}`}
+            >
+              Oil &amp; Battery
+            </Link>
 
             {industries.length > 0 ? (
               <div className="nav-group relative group">
@@ -217,7 +225,7 @@ export default function Header({ categories = [], industries = [] }) {
               About Us
             </Link>
             <Link
-              href={resolveHref("#contact")}
+              href="/contact"
               className={`nav-link ${isContact ? "is-active" : ""}`}
             >
               Contact
@@ -239,7 +247,7 @@ export default function Header({ categories = [], industries = [] }) {
               )}
             </button>
             <Link
-              href={resolveHref("#contact")}
+              href="/contact"
               className="!hidden sm:!inline-flex whitespace-nowrap btn-primary px-6 py-3 text-[14px] text-white"
             >
               Request a Quote <ArrowRight className="w-4 h-4" />
@@ -321,6 +329,13 @@ export default function Header({ categories = [], industries = [] }) {
             Brands
           </Link>
           <Link
+            href="/oil-battery"
+            className="mobile-link"
+            onClick={() => setMenuOpen(false)}
+          >
+            Oil &amp; Battery
+          </Link>
+          <Link
             href={resolveHref("#industries")}
             className="mobile-link"
             onClick={() => setMenuOpen(false)}
@@ -335,14 +350,14 @@ export default function Header({ categories = [], industries = [] }) {
             About Us
           </Link>
           <Link
-            href={resolveHref("#contact")}
+            href="/contact"
             className="mobile-link"
             onClick={() => setMenuOpen(false)}
           >
             Contact
           </Link>
           <Link
-            href={resolveHref("#contact")}
+            href="/contact"
             className="btn-primary justify-center mt-4"
             onClick={() => setMenuOpen(false)}
           >

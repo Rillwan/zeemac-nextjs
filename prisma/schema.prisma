@@ -121,6 +121,8 @@ model SiteContent {
   body2        String?
   body3        String?
   image        String?
+  image2       String?
+  image3       String?
   imageAlt     String?
   tagline      String?            // comma-separated, Hero-ന് മാത്രം
   seoTitle        String?
@@ -174,4 +176,43 @@ model Review {
   order       Int       @default(0)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+}
+
+model SiteSetting {
+  id             Int      @id @default(1)
+  phone          String?
+  whatsappNumber String?
+  email          String?
+  address        String?
+  workingHours   String?
+  mapEmbedUrl    String?
+  updatedAt      DateTime @updatedAt
+}
+
+model Enquiry {
+  id        Int      @id @default(autoincrement())
+  name      String
+  company   String?
+  phone     String?
+  email     String?
+  topic     String   @default("other")
+  message   String
+  status    String   @default("new")
+  ipHash    String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+model Banner {
+  id          Int      @id @default(autoincrement())
+  title       String
+  image       String
+  mobileImage String?
+  alt         String
+  link        String?
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

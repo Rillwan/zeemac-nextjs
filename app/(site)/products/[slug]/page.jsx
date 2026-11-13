@@ -6,7 +6,8 @@ import ProductCard from '@/components/site/ProductCard';
 import ProductGallery from '@/components/site/ProductGallery';
 import Breadcrumbs from '@/components/site/Breadcrumbs';
 import { getAllSpecs } from '@/lib/specs';
-import { PRODUCT_WHATSAPP_NUMBER } from '@/lib/contact';
+import { getSettings } from '@/lib/settings';
+import { whatsappUrl } from '@/lib/contact';
 
 export const dynamic = 'force-dynamic';
 
@@ -58,6 +59,7 @@ export default async function ProductDetailPage({ params }) {
     include: { brand: true, category: true, images: { orderBy: { order: 'asc' }, take: 1 } }
   });
 
+  const settings = await getSettings();
   const { rows: specRows, notes: specNotes } = getAllSpecs(product.specifications);
   const hasSpecs = specRows.length > 0 || specNotes.length > 0;
   const hasDetails = Boolean(
@@ -119,7 +121,7 @@ export default async function ProductDetailPage({ params }) {
 
               <div className="mt-7 flex flex-wrap gap-3">
                 <a
-                  href={`https://wa.me/${PRODUCT_WHATSAPP_NUMBER}?text=${encodeURIComponent(enquiryText)}`}
+                  href={whatsappUrl(settings.whatsappNumber, enquiryText)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-primary"

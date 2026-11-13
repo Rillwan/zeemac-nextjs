@@ -13,7 +13,10 @@ export default async function sitemap() {
     { url: `${SITE_URL}/`, changeFrequency: 'weekly', priority: 1.0 },
     { url: `${SITE_URL}/products`, changeFrequency: 'daily', priority: 0.9 },
     { url: `${SITE_URL}/categories`, changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${SITE_URL}/brands`, changeFrequency: 'weekly', priority: 0.7 }
+    { url: `${SITE_URL}/brands`, changeFrequency: 'weekly', priority: 0.7 },
+    { url: `${SITE_URL}/about`, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${SITE_URL}/oil-battery`, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${SITE_URL}/contact`, changeFrequency: 'monthly', priority: 0.7 }
   ].map((r) => ({ ...r, lastModified: new Date() }));
 
   const productRoutes = products.map((p) => ({

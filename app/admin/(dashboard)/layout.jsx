@@ -10,7 +10,10 @@ const TABS = [
   { href: '/admin/seo', label: 'SEO' },
   { href: '/admin/homepage-items', label: 'Homepage Items' },
   { href: '/admin/hero-slides', label: 'Hero Slides' },
-  { href: '/admin/reviews', label: 'Reviews' }
+  { href: '/admin/banners', label: 'Banners' },
+  { href: '/admin/reviews', label: 'Reviews' },
+  { href: '/admin/enquiries', label: 'Enquiries' },
+  { href: '/admin/settings', label: 'Site Settings' }
 ];
 
 export default async function DashboardLayout({ children }) {
@@ -25,7 +28,7 @@ export default async function DashboardLayout({ children }) {
         </div>
         <LogoutButton />
       </header>
-      <nav className="bg-white border-b border-slate-100 px-6 flex gap-6 overflow-x-scroll">
+      <nav className="bg-white border-b border-slate-100 px-6 flex gap-6">
         {TABS.map((tab) => (
           <Link key={tab.href} href={tab.href} className="text-sm font-semibold text-slate-500 hover:text-brand py-3 border-b-2 border-transparent hover:border-brand transition-colors">
             {tab.label}

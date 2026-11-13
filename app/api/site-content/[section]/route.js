@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 
 const ALLOWED_FIELDS = [
   'eyebrow', 'heading', 'headingLine2', 'body1', 'body2', 'body3',
-  'image', 'imageAlt', 'tagline', 'seoTitle', 'metaDescription', 'focusKeyword'
+  'image', 'image2', 'image3', 'imageAlt', 'tagline', 'seoTitle', 'metaDescription', 'focusKeyword'
 ];
 
 export async function GET(request, { params }) {

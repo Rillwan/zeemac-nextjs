@@ -26,11 +26,14 @@ export async function middleware(request) {
   }
 
   // Admin-only API mutations (reads stay public where relevant, e.g. GET /api/products)
-  const adminApiPrefixes = ['/api/products', '/api/categories', '/api/brands', '/api/upload', '/api/site-content', '/api/homepage-items', '/api/hero-slides', '/api/reviews'];
+  const adminApiPrefixes = ['/api/products', '/api/categories', '/api/brands', '/api/upload', '/api/site-content', '/api/homepage-items', '/api/hero-slides', '/api/reviews', '/api/settings', '/api/banners'];
   const isMutatingMethod = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(request.method);
   const isProtectedApiMutation = adminApiPrefixes.some((p) => pathname.startsWith(p)) && isMutatingMethod;
 
-  if (isProtectedApiMutation) {
+  // Enquiries: the public contact form may POST, everything else (reading, updating, deleting) is admin-only
+  const isProtectedEnquiryCall = pathname.startsWith('/api/enquiries') && request.method !== 'POST';
+
+  if (isProtectedApiMutation || isProtectedEnquiryCall) {
     if (!(await hasValidSession(request))) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -43,6 +46,6 @@ export const config = {
   matcher: [
     '/admin/:path*',
     '/api/products/:path*', '/api/categories/:path*', '/api/brands/:path*',
-    '/api/upload/:path*', '/api/site-content/:path*', '/api/homepage-items/:path*', '/api/hero-slides/:path*', '/api/reviews/:path*'
+    '/api/upload/:path*', '/api/site-content/:path*', '/api/homepage-items/:path*', '/api/hero-slides/:path*', '/api/reviews/:path*', '/api/settings/:path*', '/api/enquiries/:path*', '/api/banners/:path*'
   ]
 };

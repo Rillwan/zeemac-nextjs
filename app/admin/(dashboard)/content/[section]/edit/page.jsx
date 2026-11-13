@@ -14,6 +14,7 @@ const VALID_SECTIONS = {
   popup: "First-visit Offer Popup",
   featured: "Featured Products Section",
   reviews: "Reviews Section",
+  oilbattery: "Oil & Battery (home section and page)",
 };
 
 export const dynamic = "force-dynamic";

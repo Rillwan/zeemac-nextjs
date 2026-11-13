@@ -2,13 +2,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, FileText, Info, PackageSearch, Settings2 } from 'lucide-react';
 import { getSpecHighlights } from '@/lib/specs';
-import { PRODUCT_WHATSAPP_NUMBER } from '@/lib/contact';
+import { getSettings } from '@/lib/settings';
+import { whatsappUrl } from '@/lib/contact';
 
-export default function ProductCard({ product }) {
+export default async function ProductCard({ product }) {
+  const settings = await getSettings();
   const href = `/products/${product.slug}`;
   const specs = getSpecHighlights(product.specifications, 2);
   const enquiryText = `Hi Zeemac Filters, I'd like to enquire about: ${product.name}${product.partNumber ? ` (Part No: ${product.partNumber})` : ''}`;
-  const enquiryHref = `https://wa.me/${PRODUCT_WHATSAPP_NUMBER}?text=${encodeURIComponent(enquiryText)}`;
+  const enquiryHref = whatsappUrl(settings.whatsappNumber, enquiryText);
 
   return (
     <article className="product-card">
@@ -42,7 +44,7 @@ export default function ProductCard({ product }) {
             <ul className="product-specs">
               {specs.map((spec) => (
                 <li key={spec.label}>
-                  <Settings2 className="w-4 h-4" />
+                  <Settings2 />
                   <span>
                     {spec.label}: {spec.value}
                   </span>
@@ -50,33 +52,33 @@ export default function ProductCard({ product }) {
               ))}
             </ul>
           )}
-        </div>
-      </div>
 
-      <div className="product-actions">
-        <a
-          href={enquiryHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-primary btn-sm"
-        >
-          Enquire Now <ArrowRight className="w-4 h-4" />
-        </a>
-        {product.datasheetUrl ? (
-          <a
-            href={product.datasheetUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="product-doc-btn"
-            aria-label={`Download datasheet for ${product.name}`}
-          >
-            <FileText className="w-5 h-5" />
-          </a>
-        ) : (
-          <Link href={href} className="product-doc-btn" aria-label={`View details of ${product.name}`}>
-            <Info className="w-5 h-5" />
-          </Link>
-        )}
+          <div className="product-actions">
+            <a
+              href={enquiryHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary btn-sm"
+            >
+              Enquire Now <ArrowRight />
+            </a>
+            {product.datasheetUrl ? (
+              <a
+                href={product.datasheetUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="product-doc-btn"
+                aria-label={`Download datasheet for ${product.name}`}
+              >
+                <FileText />
+              </a>
+            ) : (
+              <Link href={href} className="product-doc-btn" aria-label={`View details of ${product.name}`}>
+                <Info />
+              </Link>
+            )}
+          </div>
+        </div>
       </div>
     </article>
   );
