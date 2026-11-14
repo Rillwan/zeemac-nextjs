@@ -1,9 +1,13 @@
 import Reveal from "@/components/site/Reveal";
+import Parallax from "@/components/site/Parallax";
 import AccentText from "@/components/site/AccentText";
 import { prisma } from "@/lib/prisma";
 import { SITE_CONTENT_DEFAULTS } from "@/lib/siteContentDefaults";
 import { ICON_MAP } from "@/lib/icons";
 import { PackageSearch } from "lucide-react";
+
+// Each column drifts at its own speed while scrolling
+const COLUMN_SPEEDS = [6, 14, 22];
 
 export default async function WhyChoose() {
   const defaults = SITE_CONTENT_DEFAULTS.whychoose;
@@ -34,18 +38,19 @@ export default async function WhyChoose() {
           {items.map((item, i) => {
             const Icon = ICON_MAP[item.icon] || PackageSearch;
             return (
-              <Reveal
-                as="div"
-                className="why-card"
-                key={item.id}
-                delay={(i % 3) * 0.06}
-              >
-                <span className="why-card-icon">
-                  <Icon className="w-7 h-7" />
-                </span>
-                <h4>{item.title}</h4>
-                <p>{item.description}</p>
-              </Reveal>
+              <Parallax key={item.id} className="h-full" speed={COLUMN_SPEEDS[i % 3]}>
+                <Reveal
+                  as="div"
+                  className="why-card h-full"
+                  delay={(i % 3) * 0.06}
+                >
+                  <span className="why-card-icon">
+                    <Icon className="w-7 h-7" />
+                  </span>
+                  <h4>{item.title}</h4>
+                  <p>{item.description}</p>
+                </Reveal>
+              </Parallax>
             );
           })}
         </div>

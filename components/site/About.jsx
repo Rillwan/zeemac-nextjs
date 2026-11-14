@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Reveal from "@/components/site/Reveal";
+import Parallax from "@/components/site/Parallax";
 import { ArrowRight, Box } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { SITE_CONTENT_DEFAULTS } from "@/lib/siteContentDefaults";
@@ -35,22 +36,29 @@ export default async function About() {
       <div className="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         <Reveal as="div" className="relative mb-6 lg:mb-0">
           <div className="relative aspect-[4/3.2] overflow-hidden rounded-2xl shadow-xl">
-            <Image
-              src={content?.image || defaults.image}
-              alt={content?.imageAlt || defaults.imageAlt}
-              fill
-              sizes="(min-width: 1024px) 600px, 100vw"
-              className="object-cover"
-            />
+            <Parallax className="absolute inset-0" speed={10} scale={1.25}>
+              <Image
+                src={content?.image || defaults.image}
+                alt={content?.imageAlt || defaults.imageAlt}
+                fill
+                sizes="(min-width: 1024px) 600px, 100vw"
+                className="object-cover"
+              />
+            </Parallax>
           </div>
-          <div className="absolute z-[2] -bottom-6 left-4 lg:-left-6 hidden sm:block max-w-xs rounded-xl border border-slate-100 bg-white p-5 shadow-xl">
-            <p className="text-sm font-semibold text-slate-800">
-              {content?.tagline || defaults.tagline}
-            </p>
-            <p className="mt-1 text-xs text-slate-500">
-              {content?.headingLine2 || defaults.headingLine2}
-            </p>
-          </div>
+          <Parallax
+            className="absolute z-[2] -bottom-6 left-4 lg:-left-6 hidden sm:block max-w-xs"
+            speed={-40}
+          >
+            <div className="rounded-xl border border-slate-100 bg-white p-5 shadow-xl">
+              <p className="text-sm font-semibold text-slate-800">
+                {content?.tagline || defaults.tagline}
+              </p>
+              <p className="mt-1 text-xs text-slate-500">
+                {content?.headingLine2 || defaults.headingLine2}
+              </p>
+            </div>
+          </Parallax>
         </Reveal>
 
         <div>

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Reveal from "@/components/site/Reveal";
+import Parallax from "@/components/site/Parallax";
 import { ArrowRight } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { SITE_CONTENT_DEFAULTS } from "@/lib/siteContentDefaults";
@@ -13,13 +14,15 @@ export default async function CTA() {
     <section id="cta" className="section-pad pt-0">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         <Reveal as="div" className="cta-banner">
-          <Image
-            src={content?.image || "/images/about.jpeg"}
-            alt={content?.imageAlt || "Zeemac filtration solutions"}
-            fill
-            sizes="(max-width: 1280px) 100vw, 1280px"
-            className="cta-bg-img"
-          />
+          <Parallax className="absolute inset-0" speed={14} scale={1.35}>
+            <Image
+              src={content?.image || "/images/about.jpeg"}
+              alt={content?.imageAlt || "Zeemac filtration solutions"}
+              fill
+              sizes="(max-width: 1280px) 100vw, 1280px"
+              className="cta-bg-img"
+            />
+          </Parallax>
           <div className="cta-content">
             <h2 className="cta-title">
               {content?.heading || SITE_CONTENT_DEFAULTS.cta.heading}

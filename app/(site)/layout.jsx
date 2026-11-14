@@ -1,6 +1,7 @@
 import Header from '@/components/site/Header';
 import Footer from '@/components/site/Footer';
 import Preloader from '@/components/site/Preloader';
+import CardEffects from '@/components/site/CardEffects';
 import WhatsAppButton from '@/components/site/WhatsAppButton';
 import { prisma } from '@/lib/prisma';
 import { getSettings } from '@/lib/settings';
@@ -22,6 +23,7 @@ export default async function SiteLayout({ children }) {
   return (
     <>
       <Preloader />
+      <CardEffects />
       <Header categories={categories} industries={industries} />
       <main id="home-wrap">{children}</main>
       <Footer settings={settings} />

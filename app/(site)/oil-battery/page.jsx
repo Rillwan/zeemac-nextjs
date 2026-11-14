@@ -17,6 +17,8 @@ import {
 } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import Reveal from '@/components/site/Reveal';
+import Parallax from '@/components/site/Parallax';
+import OilBatteryGallery from '@/components/site/OilBatteryGallery';
 import AccentText from '@/components/site/AccentText';
 import Breadcrumbs from '@/components/site/Breadcrumbs';
 import { SITE_CONTENT_DEFAULTS } from '@/lib/siteContentDefaults';
@@ -38,6 +40,9 @@ export const metadata = {
     'Engine oils, industrial lubricants, automotive and industrial batteries for vehicles, generators, marine and industrial equipment. Talk to Zeemac Filters about your requirements.'
 };
 export const dynamic = 'force-dynamic';
+
+// Only accept real picture paths from the admin form
+const asImage = (value) => (typeof value === 'string' && /^(\/|https?:\/\/)/.test(value) ? value : null);
 
 const ICONS = { Ship, Zap, Truck, Factory, UtensilsCrossed, HardHat, ShieldCheck, Wrench, Headset };
 
@@ -90,6 +95,8 @@ function ProductBlock({ block, icon: Icon, tone }) {
 export default async function OilBatteryPage() {
   const defaults = SITE_CONTENT_DEFAULTS.oilbattery;
   const content = await prisma.siteContent.findUnique({ where: { section: 'oilbattery' } });
+
+  const galleryImages = [asImage(content?.body2), asImage(content?.body3), asImage(content?.headingLine2)];
 
   const SITE_URL = 'https://www.zeemacfilters.com';
   const breadcrumbSchema = {
@@ -214,6 +221,8 @@ export default async function OilBatteryPage() {
         </div>
       </section>
 
+      <OilBatteryGallery images={galleryImages} />
+
       {/* Call to action */}
       <section className="pb-14 lg:pb-20 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
@@ -222,6 +231,15 @@ export default async function OilBatteryPage() {
             className="cta-banner"
             style={{ background: 'linear-gradient(135deg, #0E2A52 0%, #1E63D6 100%)' }}
           >
+            <Parallax className="absolute inset-0" speed={14} scale={1.35}>
+              <Image
+                src="/images/about.jpeg"
+                alt=""
+                fill
+                sizes="(max-width: 1280px) 100vw, 1280px"
+                className="cta-bg-img"
+              />
+            </Parallax>
             <div className="cta-content">
               <h2 className="cta-title">{OB_CTA.heading}</h2>
               <p className="cta-text">{OB_CTA.text}</p>

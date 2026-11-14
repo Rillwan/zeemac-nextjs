@@ -2,134 +2,173 @@
 
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import gsap from 'gsap';
 
-const SEEN_KEY = 'zeemac-preloader-seen';
+function SplitLine({ text, className }) {
+  return (
+    <p className={`pl-line ${className}`} aria-hidden="true">
+      {text.split('').map((char, i) => (
+        <span key={i} className="pl-char">
+          {char}
+        </span>
+      ))}
+    </p>
+  );
+}
 
 export default function Preloader() {
-  const preloaderRef = useRef(null);
+  const rootRef = useRef(null);
   const logoRef = useRef(null);
-  const nameRef = useRef(null);
-  const subRef = useRef(null);
-  const barRef = useRef(null);
-  const routeBarRef = useRef(null);
+  const busyRef = useRef(false);
+  const timerRef = useRef(null);
   const pathname = usePathname();
-  const isFirstRun = useRef(true);
+  const prevPathRef = useRef(pathname);
+  const router = useRouter();
 
-  // First visit of the session: the logo reveals, the waves drift, the name opens up, a line fills, then the screen lifts away.
-  // Later visits in the same session (and visitors who prefer reduced motion) skip it.
-  useEffect(() => {
-    const el = preloaderRef.current;
-    if (!el) return undefined;
+  const getChars = () =>
+    rootRef.current ? Array.from(rootRef.current.querySelectorAll('.pl-char')) : [];
+  const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    let seen = false;
-    try {
-      seen = window.sessionStorage.getItem(SEEN_KEY) === '1';
-    } catch {
-      seen = false;
-    }
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Hides the screen and tells Hero / OfferPopup that the page may start its own animation
+  const finish = () => {
+    window.clearTimeout(timerRef.current);
+    if (rootRef.current) gsap.set(rootRef.current, { visibility: 'hidden' });
+    busyRef.current = false;
+    document.body.classList.add('loaded');
+    window.dispatchEvent(new CustomEvent('zeemac:loaded'));
+  };
 
-    const finish = () => {
-      el.style.display = 'none';
-      document.body.classList.add('loaded');
-      window.dispatchEvent(new CustomEvent('zeemac:loaded'));
-      try {
-        window.sessionStorage.setItem(SEEN_KEY, '1');
-      } catch {
-        // storage blocked: the animation simply plays again next time
+  // Screen slides up from the bottom, then the letters rise one by one
+  const coverIn = () =>
+    new Promise((resolve) => {
+      const el = rootRef.current;
+      if (!el) {
+        resolve();
+        return;
       }
-    };
+      gsap.killTweensOf([el, logoRef.current, ...getChars()]);
+      gsap.set(el, { visibility: 'visible', yPercent: 100 });
+      gsap.set(getChars(), { yPercent: 110, opacity: 1 });
+      gsap.set(logoRef.current, { opacity: 0, y: 12 });
+      gsap
+        .timeline({ onComplete: resolve })
+        .to(el, { yPercent: 0, duration: 0.55, ease: 'power3.inOut' })
+        .to(logoRef.current, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, '-=0.15')
+        .to(getChars(), { yPercent: 0, duration: 0.6, ease: 'power4.out', stagger: 0.04 }, '-=0.3');
+    });
 
-    if (seen || reduceMotion) {
+  // Letters leave upward, then the whole screen lifts away
+  const revealOut = (hold = 0.15) => {
+    const el = rootRef.current;
+    if (!el) {
+      finish();
+      return;
+    }
+    gsap
+      .timeline({ onComplete: finish })
+      .to(getChars(), { yPercent: -110, duration: 0.45, ease: 'power3.in', stagger: 0.025 }, hold)
+      .to(logoRef.current, { opacity: 0, duration: 0.25, ease: 'power1.in' }, hold)
+      .to(el, { yPercent: -100, duration: 0.7, ease: 'power3.inOut' }, '-=0.1');
+  };
+
+  // A) Full page load / refresh
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return undefined;
+    if (reduceMotion()) {
       finish();
       return undefined;
     }
+    busyRef.current = true;
+    gsap.set(el, { yPercent: 0, visibility: 'visible' });
+    gsap.set(getChars(), { yPercent: 110, opacity: 1 });
+    gsap.set(logoRef.current, { opacity: 0, y: 12 });
 
-    let bob;
-    const tl = gsap.timeline();
-
-    tl.fromTo(
-      logoRef.current,
-      { clipPath: 'inset(0 100% 0 0)', scale: 0.9, opacity: 1 },
-      { clipPath: 'inset(0 0% 0 0)', scale: 1, duration: 0.95, ease: 'power2.inOut' }
-    )
-      .add(() => {
-        bob = gsap.to(logoRef.current, { y: -5, duration: 0.7, yoyo: true, repeat: -1, ease: 'sine.inOut' });
-      })
-      .fromTo(
-        nameRef.current,
-        { opacity: 0, y: 10, letterSpacing: '0.5em' },
-        { opacity: 1, y: 0, letterSpacing: '0.14em', duration: 0.65, ease: 'power3.out' },
-        '-=0.35'
-      )
-      .fromTo(subRef.current, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'power2.out' }, '-=0.35')
-      .to(barRef.current, { width: '100%', duration: 0.9, ease: 'power1.inOut' }, '-=0.6')
-      .to(
-        el,
-        {
-          yPercent: -100,
-          duration: 0.8,
-          ease: 'power3.inOut',
-          onStart: () => {
-            if (bob) bob.kill();
-          },
-          onComplete: finish
-        },
-        '+=0.2'
-      );
+    const tl = gsap.timeline({ onComplete: () => revealOut(0.45) });
+    tl.to(logoRef.current, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }).to(
+      getChars(),
+      { yPercent: 0, duration: 0.7, ease: 'power4.out', stagger: 0.05 },
+      '-=0.2'
+    );
 
     return () => {
-      if (bob) bob.kill();
-      tl.revert();
+      tl.kill();
     };
   }, []);
 
-  // Moving between pages: a thin progress line across the top instead of a full screen
+  // B) Clicking an internal link to another page: cover first, then navigate
   useEffect(() => {
-    if (isFirstRun.current) {
-      isFirstRun.current = false;
+    const onClick = (e) => {
+      if (e.defaultPrevented || e.button !== 0) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = e.target instanceof Element ? e.target.closest('a[href]') : null;
+      if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
+
+      let url;
+      try {
+        url = new URL(a.href, window.location.href);
+      } catch {
+        return;
+      }
+      if (url.origin !== window.location.origin) return;
+      if (/^\/(admin|api|uploads)(\/|$)/.test(url.pathname)) return;
+      if (url.pathname === window.location.pathname) return;
+      if (reduceMotion()) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+      if (busyRef.current) return;
+
+      busyRef.current = true;
+      document.body.classList.remove('loaded');
+      window.clearTimeout(timerRef.current);
+      // Safety: never leave the visitor stuck behind the screen
+      timerRef.current = window.setTimeout(() => revealOut(0.1), 8000);
+      coverIn().then(() => router.push(url.pathname + url.search + url.hash));
+    };
+
+    document.addEventListener('click', onClick, true);
+    return () => document.removeEventListener('click', onClick, true);
+  }, [router]);
+
+  // C) The new page is ready: reveal it (also covers browser back / forward)
+  useEffect(() => {
+    if (prevPathRef.current === pathname) return;
+    prevPathRef.current = pathname;
+
+    if (reduceMotion()) {
+      finish();
       return;
     }
-    const bar = routeBarRef.current;
-    if (!bar) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const el = rootRef.current;
+    if (!el) return;
 
-    gsap.killTweensOf(bar);
-    gsap
-      .timeline()
-      .fromTo(bar, { width: '0%', opacity: 1 }, { width: '100%', duration: 0.5, ease: 'power2.out' })
-      .to(bar, { opacity: 0, duration: 0.3 });
+    if (!busyRef.current) {
+      busyRef.current = true;
+      document.body.classList.remove('loaded');
+      gsap.killTweensOf([el, logoRef.current, ...getChars()]);
+      gsap.set(el, { visibility: 'visible', yPercent: 0 });
+      gsap.set(getChars(), { yPercent: 0, opacity: 1 });
+      gsap.set(logoRef.current, { opacity: 1, y: 0 });
+    }
+    revealOut(0.15);
   }, [pathname]);
 
   return (
     <>
-      <div id="preloader" ref={preloaderRef} aria-hidden="true" suppressHydrationWarning>
+      <div id="preloader" ref={rootRef} aria-hidden="true" suppressHydrationWarning>
         <div className="preloader-inner">
           <div className="preloader-logo" ref={logoRef}>
             <Image src="/images/logo.png" alt="" width={132} height={106} priority />
           </div>
-          <p className="preloader-name" ref={nameRef}>ZEEMAC</p>
-          <p className="preloader-sub" ref={subRef}>FILTERS</p>
-          <div className="preloader-bar">
-            <span ref={barRef}></span>
-          </div>
+          <SplitLine text="ZEEMAC" className="pl-name" />
+          <SplitLine text="FILTERS" className="pl-sub" />
         </div>
       </div>
-      {/* Hides the loader before the first paint when it has already played in this browser session */}
-      <script
-        dangerouslySetInnerHTML={{
-          __html:
-            "try{if(sessionStorage.getItem('" +
-            SEEN_KEY +
-            "')==='1'){var p=document.getElementById('preloader');if(p)p.style.display='none';}}catch(e){}"
-        }}
-      />
       <noscript>
         <style>{'#preloader{display:none!important}'}</style>
       </noscript>
-      <div className="route-progress" ref={routeBarRef} aria-hidden="true" />
     </>
   );
 }
