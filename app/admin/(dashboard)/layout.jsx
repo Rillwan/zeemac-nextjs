@@ -1,41 +1,13 @@
-import Link from 'next/link';
 import { getSession } from '@/lib/auth';
-import LogoutButton from '@/components/admin/LogoutButton';
-
-const TABS = [
-  { href: '/admin', label: 'Products' },
-  { href: '/admin/categories', label: 'Categories' },
-  { href: '/admin/brands', label: 'Brands' },
-  { href: '/admin/content', label: 'Page content' },
-  { href: '/admin/seo', label: 'SEO' },
-  { href: '/admin/homepage-items', label: 'Homepage Items' },
-  { href: '/admin/hero-slides', label: 'Hero Slides' },
-  { href: '/admin/banners', label: 'Banners' },
-  { href: '/admin/reviews', label: 'Reviews' },
-  { href: '/admin/enquiries', label: 'Enquiries' },
-  { href: '/admin/settings', label: 'Site Settings' }
-];
+import AdminHeader from '@/components/admin/AdminHeader';
 
 export default async function DashboardLayout({ children }) {
   const session = await getSession();
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <header className="bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between">
-        <div>
-          <p className="font-extrabold text-brand-navy">Zeemac Admin</p>
-          {session?.email && <p className="text-xs text-slate-400">{session.email}</p>}
-        </div>
-        <LogoutButton />
-      </header>
-      <nav className="bg-white border-b border-slate-100 px-6 flex gap-6">
-        {TABS.map((tab) => (
-          <Link key={tab.href} href={tab.href} className="text-sm font-semibold text-slate-500 hover:text-brand py-3 border-b-2 border-transparent hover:border-brand transition-colors">
-            {tab.label}
-          </Link>
-        ))}
-      </nav>
-      <div className="p-6">{children}</div>
+      <AdminHeader email={session?.email || ''} />
+      <div className="p-4 sm:p-6">{children}</div>
     </div>
   );
 }

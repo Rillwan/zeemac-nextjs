@@ -31,7 +31,7 @@ export default function CategoryTable({ initialCategories }) {
 
   return (
     <div className="card overflow-x-auto">
-      <table className="w-full text-sm">
+      <table className="admin-table w-full text-sm">
         <thead>
           <tr className="text-left text-slate-400 border-b border-slate-100">
             <th className="pb-3 font-semibold">Name</th>
@@ -42,9 +42,9 @@ export default function CategoryTable({ initialCategories }) {
         <tbody>
           {categories.map((c) => (
             <tr key={c.id} className="border-b border-slate-50 last:border-0">
-              <td className="py-3 font-medium text-brand-navy">{c.name}</td>
-              <td className="py-3 text-slate-400">{c.slug}</td>
-              <td className="py-3 text-right">
+              <td data-label="Name" className="py-3 font-medium text-brand-navy">{c.name}</td>
+              <td data-label="Slug" className="py-3 text-slate-400">{c.slug}</td>
+              <td data-label="" className="py-3 text-right">
                 <div className="flex items-center justify-end gap-3">
                   <Link href={`/admin/categories/${c.id}/edit`} aria-label="Edit" className="text-slate-400 hover:text-brand">
                     <Pencil className="w-4 h-4" />

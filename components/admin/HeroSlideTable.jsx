@@ -31,7 +31,7 @@ export default function HeroSlideTable({ initialSlides }) {
 
   return (
     <div className="card overflow-x-auto">
-      <table className="w-full text-sm">
+      <table className="admin-table w-full text-sm">
         <thead>
           <tr className="text-left text-slate-400 border-b border-slate-100">
             <th className="pb-3 font-semibold">Order</th>
@@ -44,24 +44,24 @@ export default function HeroSlideTable({ initialSlides }) {
         <tbody>
           {slides.map((s) => (
             <tr key={s.id} className="border-b border-slate-50 last:border-0">
-              <td className="py-3 text-slate-500">{s.order}</td>
-              <td className="py-3">
+              <td data-label="Order" className="py-3 text-slate-500">{s.order}</td>
+              <td data-label="Image" className="py-3">
                 {s.image ? (
                   <img src={s.image} alt="" className="w-16 h-12 object-cover rounded-md border border-slate-100" />
                 ) : (
                   <span className="text-slate-300">—</span>
                 )}
               </td>
-              <td className="py-3 font-medium text-brand-navy">
+              <td data-label="Heading" className="py-3 font-medium text-brand-navy">
                 {s.heading}
                 {s.headingLine2 ? <span className="text-brand"> {s.headingLine2}</span> : null}
               </td>
-              <td className="py-3">
+              <td data-label="Status" className="py-3">
                 <span className={`text-xs font-semibold px-2 py-1 rounded-full ${s.isActive ? 'bg-green-50 text-green-600' : 'bg-slate-100 text-slate-500'}`}>
                   {s.isActive ? 'Showing' : 'Hidden'}
                 </span>
               </td>
-              <td className="py-3 text-right">
+              <td data-label="" className="py-3 text-right">
                 <div className="flex items-center justify-end gap-3">
                   <Link href={`/admin/hero-slides/${s.id}/edit`} aria-label="Edit" className="text-slate-400 hover:text-brand">
                     <Pencil className="w-4 h-4" />

@@ -38,7 +38,7 @@ export default function HomepageItemTable({ section, initialItems }) {
 
   return (
     <div className="card overflow-x-auto w-full">
-      <table className="w-full text-sm">
+      <table className="admin-table w-full text-sm">
         <thead>
           <tr className="text-left text-slate-400 border-b border-slate-100">
             <th className="pb-3 font-semibold">Icon</th>
@@ -55,18 +55,18 @@ export default function HomepageItemTable({ section, initialItems }) {
                 key={item.id}
                 className="border-b border-slate-50 last:border-0"
               >
-                <td className="py-3">
+                <td data-label="Icon" className="py-3">
                   <span className="w-9 h-9 rounded-lg bg-brand-light flex items-center justify-center text-brand">
                     {Icon && <Icon className="w-4 h-4" />}
                   </span>
                 </td>
-                <td className="py-3 font-medium text-brand-navy">
+                <td data-label="Title" className="py-3 font-medium text-brand-navy">
                   {item.title}
                 </td>
-                <td className="py-3 text-slate-500 max-w-xs truncate">
+                <td data-label="Description" className="py-3 text-slate-500 max-w-xs truncate">
                   {item.description}
                 </td>
-                <td className="py-3 text-right">
+                <td data-label="" className="py-3 text-right">
                   <div className="flex items-center justify-end gap-3">
                     <Link
                       href={`/admin/homepage-items/${item.id}/edit?section=${section}`}

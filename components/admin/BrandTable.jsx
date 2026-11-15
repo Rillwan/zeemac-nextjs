@@ -62,7 +62,7 @@ export default function BrandTable({ initialBrands }) {
 
   return (
     <div className="card overflow-x-auto">
-      <table className="w-full text-sm">
+      <table className="admin-table w-full text-sm">
         <thead>
           <tr className="text-left text-slate-400 border-b border-slate-100">
             <th className="pb-3 font-semibold">Order</th>
@@ -79,7 +79,7 @@ export default function BrandTable({ initialBrands }) {
             const isLast = group[group.length - 1]?.id === b.id;
             return (
               <tr key={b.id} className="border-b border-slate-50 last:border-0">
-                <td className="py-3">
+                <td data-label="Order" className="py-3">
                   <div className="flex items-center gap-1">
                     <button
                       type="button"
@@ -101,15 +101,15 @@ export default function BrandTable({ initialBrands }) {
                     </button>
                   </div>
                 </td>
-                <td className="py-3">
+                <td data-label="Logo" className="py-3">
                   {b.logo ? (
                     <img src={b.logo} alt="" className="w-12 h-9 object-contain rounded border border-slate-100 bg-white" />
                   ) : (
                     <span className="text-slate-300">—</span>
                   )}
                 </td>
-                <td className="py-3 font-medium text-brand-navy">{b.name}</td>
-                <td className="py-3">
+                <td data-label="Name" className="py-3 font-medium text-brand-navy">{b.name}</td>
+                <td data-label="Homepage" className="py-3">
                   {b.featured ? (
                     <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-full bg-brand-light text-brand">
                       <Star className="w-3 h-3 fill-brand" /> Highlighted
@@ -118,7 +118,7 @@ export default function BrandTable({ initialBrands }) {
                     <span className="text-xs text-slate-400">Logo tile</span>
                   )}
                 </td>
-                <td className="py-3 text-right">
+                <td data-label="" className="py-3 text-right">
                   <div className="flex items-center justify-end gap-3">
                     <Link href={`/admin/brands/${b.id}/edit`} aria-label="Edit" className="text-slate-400 hover:text-brand">
                       <Pencil className="w-4 h-4" />

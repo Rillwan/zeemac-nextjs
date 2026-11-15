@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { SITE_CONTENT_DEFAULTS } from "@/lib/siteContentDefaults";
 
-const AUTOPLAY_MS = 6500;
+const AUTOPLAY_MS = 4000;
 const DEFAULTS = SITE_CONTENT_DEFAULTS.hero;
 const ANIMATED =
   ".hero-eyebrow, .hero-title .char, [data-hero-text], [data-hero-actions]";

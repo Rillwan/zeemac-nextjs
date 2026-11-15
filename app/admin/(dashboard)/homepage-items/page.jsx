@@ -28,7 +28,7 @@ export default async function HomepageItemsPage({ searchParams }) {
     <div className="w-full">
       <h2 className="text-lg font-bold text-brand-navy mb-4">Homepage Items</h2>
 
-      <div className="flex gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-6">
         {SECTIONS.map((s) => (
           <Link
             key={s.key}

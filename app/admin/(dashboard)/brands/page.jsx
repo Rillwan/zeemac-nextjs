@@ -11,7 +11,7 @@ export default async function AdminBrandsPage() {
 
   return (
     <div className="w-full">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <h2 className="text-lg font-bold text-brand-navy">Brands</h2>
         <Link href="/admin/brands/new" className="btn-primary">
           <Plus className="w-4 h-4" /> Add Brand

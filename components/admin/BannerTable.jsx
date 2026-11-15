@@ -31,7 +31,7 @@ export default function BannerTable({ initialBanners }) {
 
   return (
     <div className="card overflow-x-auto">
-      <table className="w-full text-sm">
+      <table className="admin-table w-full text-sm">
         <thead>
           <tr className="text-left text-slate-400 border-b border-slate-100">
             <th className="pb-3 font-semibold">Order</th>
@@ -45,19 +45,19 @@ export default function BannerTable({ initialBanners }) {
         <tbody>
           {banners.map((b) => (
             <tr key={b.id} className="border-b border-slate-50 last:border-0 align-middle">
-              <td className="py-3 text-slate-500">{b.order}</td>
-              <td className="py-3">
+              <td data-label="Order" className="py-3 text-slate-500">{b.order}</td>
+              <td data-label="Picture" className="py-3">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={b.image} alt={b.alt} className="w-40 h-auto rounded-lg border border-slate-100" />
               </td>
-              <td className="py-3 font-medium text-brand-navy">{b.title}</td>
-              <td className="py-3 text-slate-500 max-w-[12rem] truncate">{b.link || '—'}</td>
-              <td className="py-3">
+              <td data-label="Name" className="py-3 font-medium text-brand-navy">{b.title}</td>
+              <td data-label="Link" className="py-3 text-slate-500 max-w-[12rem] truncate">{b.link || '—'}</td>
+              <td data-label="Status" className="py-3">
                 <span className={`text-xs font-semibold px-2 py-1 rounded-full ${b.isActive ? 'bg-green-50 text-green-600' : 'bg-slate-100 text-slate-500'}`}>
                   {b.isActive ? 'Showing' : 'Hidden'}
                 </span>
               </td>
-              <td className="py-3 text-right">
+              <td data-label="" className="py-3 text-right">
                 <div className="flex items-center justify-end gap-3">
                   <Link href={`/admin/banners/${b.id}/edit`} aria-label="Edit" className="text-slate-400 hover:text-brand">
                     <Pencil className="w-4 h-4" />

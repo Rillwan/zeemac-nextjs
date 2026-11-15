@@ -14,7 +14,7 @@ export default async function AdminDashboardPage() {
 
   return (
     <div className="">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <h2 className="text-lg font-bold text-brand-navy">Products</h2>
         <Link href="/admin/products/new" className="btn-primary">
           <Plus className="w-4 h-4" /> Add Product

@@ -11,7 +11,7 @@ export default async function AdminReviewsPage() {
 
   return (
     <div className="w-full">
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
         <h2 className="text-lg font-bold text-brand-navy">Google Reviews</h2>
         <Link href="/admin/reviews/new" className="btn-primary">
           <Plus className="w-4 h-4" /> Add Review

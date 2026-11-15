@@ -31,7 +31,7 @@ export default function ProductTable({ initialProducts }) {
 
   return (
     <div className="card overflow-x-auto">
-      <table className="w-full text-sm">
+      <table className="admin-table w-full text-sm">
         <thead>
           <tr className="text-left text-slate-400 border-b border-slate-100">
             <th className="pb-3 font-semibold">Product</th>
@@ -44,18 +44,18 @@ export default function ProductTable({ initialProducts }) {
         <tbody>
           {products.map((p) => (
             <tr key={p.id} className="border-b border-slate-50 last:border-0">
-              <td className="py-3 font-medium text-brand-navy flex items-center gap-2">
+              <td data-label="Product" className="py-3 font-medium text-brand-navy flex items-center gap-2">
                 {p.featured && <Star className="w-3.5 h-3.5 fill-brand text-brand" />}
                 {p.name}
               </td>
-              <td className="py-3 text-slate-500">{p.category?.name || '—'}</td>
-              <td className="py-3 text-slate-500">{p.brand?.name || '—'}</td>
-              <td className="py-3">
+              <td data-label="Category" className="py-3 text-slate-500">{p.category?.name || '—'}</td>
+              <td data-label="Brand" className="py-3 text-slate-500">{p.brand?.name || '—'}</td>
+              <td data-label="Status" className="py-3">
                 <span className={`text-xs font-semibold px-2 py-1 rounded-full ${p.status === 'active' ? 'bg-green-50 text-green-600' : 'bg-slate-100 text-slate-500'}`}>
                   {p.status}
                 </span>
               </td>
-              <td className="py-3 text-right">
+              <td data-label="" className="py-3 text-right">
                 <div className="flex items-center justify-end gap-3">
                   <Link href={`/admin/products/${p.id}/edit`} aria-label="Edit" className="text-slate-400 hover:text-brand">
                     <Pencil className="w-4 h-4" />

@@ -69,22 +69,22 @@ body {
   overflow: hidden;
   margin: 0;
   padding: 0.08em 0;
-  line-height: 1.15;
+  /* line-height: 1.15; */
 }
 
 .pl-name {
-  margin-top: 18px;
+  /* margin-top: 18px; */
   font-weight: 800;
-  font-size: clamp(1.6rem, 6vw, 2.4rem);
-  letter-spacing: 0.14em;
+  font-size: 1.5rem;
+  /* letter-spacing: 0.14em; */
   color: var(--navy);
 }
 
 .pl-sub {
-  margin-top: 2px;
-  font-weight: 600;
-  font-size: clamp(0.75rem, 2.6vw, 1rem);
-  letter-spacing: 0.5em;
+  /* margin-top: 2px; */
+  font-weight: 800;
+  font-size: 1.5rem;
+  /* letter-spacing: 0.5em; */
   color: var(--brand);
 }
 
@@ -1639,5 +1639,68 @@ a.review-card:hover {
 @media (prefers-reduced-motion: reduce) {
   .ob-gal-icon {
     animation: none;
+  }
+}
+
+/* ---------- Admin: tables turn into cards on phones ---------- */
+@media (max-width: 767px) {
+  .admin-table,
+  .admin-table tbody,
+  .admin-table tr,
+  .admin-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .admin-table thead {
+    display: none;
+  }
+
+  .admin-table tr {
+    padding: 14px 0;
+    border-bottom: 1px solid #EEF2F7;
+  }
+
+  .admin-table td {
+    padding: 5px 0;
+    max-width: none;
+    overflow: visible;
+    white-space: normal;
+    text-overflow: clip;
+    text-align: left;
+  }
+
+  .admin-table td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 3px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #94A3B8;
+  }
+
+  .admin-table td[data-label=""]::before {
+    display: none;
+  }
+
+  .admin-table td[data-label=""] {
+    padding-top: 10px;
+  }
+
+  /* bigger tap targets for edit / delete / move buttons */
+  .admin-table td[data-label=""] a,
+  .admin-table td button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+  }
+
+  .card {
+    padding: 16px;
   }
 }

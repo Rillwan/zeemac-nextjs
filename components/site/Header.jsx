@@ -123,10 +123,10 @@ export default function Header({ categories = [], industries = [] }) {
             aria-label="Zeemac Filters home"
           >
             <Image
-              src="/images/logo.png"
+              src="/images/zeemac-logo.png"
               alt="Zeemac Filters"
-              width={100}
-              height={50}
+              width={120}
+              height={60}
               priority
               className="w-[56px] h-auto"
             />
