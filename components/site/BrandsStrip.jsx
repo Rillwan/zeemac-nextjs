@@ -38,7 +38,7 @@ export default function BrandsStrip({ brands = [] }) {
 
   return (
     <section
-      className="bg-white pt-20 pb-10 border-b border-slate-100"
+      className="bg-white pt-10 sm:pt-20 pb-10 border-b border-slate-100"
       aria-label="Trusted brands we supply"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}

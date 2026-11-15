@@ -202,7 +202,20 @@ export default function Preloader() {
             <SplitLine text="Zeemac" className="pl-name" />
             <SplitLine text="Filters" className="pl-sub" />
           </div>
-          <SplitLine text="COMPLETE FILTRATION SOLUTIONS" className="text-[10px] tracking-[0.18em] text-slate-800 font-medium -mt-0.5 whitespace-nowrap" />
+          <div className="flex items-center gap-1.5">
+            <SplitLine
+              text="COMPLETE"
+              className="text-[10px] tracking-[0.18em] text-slate-900 font-semibold -mt-0.5 whitespace-nowrap"
+            />
+            <SplitLine
+              text="FILTRATION"
+              className="text-[10px] tracking-[0.18em] text-slate-900 font-semibold -mt-0.5 whitespace-nowrap"
+            />
+            <SplitLine
+              text="SOLUTIONS"
+              className="text-[10px] tracking-[0.18em] text-slate-900 font-semibold -mt-0.5 whitespace-nowrap"
+            />
+          </div>
         </div>
       </div>
       <noscript>
