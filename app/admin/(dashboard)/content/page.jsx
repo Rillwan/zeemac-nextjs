@@ -5,6 +5,7 @@ const SECTIONS = [
   { key: "about", label: "About Section" },
   { key: "categories", label: "Categories Section" },
   { key: "brands", label: "Brands Section" },
+  { key: "brandshowcase", label: "Brands We Distribute (heading of the tabbed section)" },
   { key: "industries", label: "Industries Section" },
   { key: "whychoose", label: "Why Choose Us Section" },
   { key: "productfinder", label: "Product Finder Section" },

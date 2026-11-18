@@ -4,6 +4,7 @@ import Banners from "@/components/site/Banners";
 import About from "@/components/site/About";
 import Categories from "@/components/site/Categories";
 import FeaturedProducts from "@/components/site/FeaturedProducts";
+import BrandShowcase from "@/components/site/BrandShowcase";
 import OilBattery from "@/components/site/OilBattery";
 import Industries from "@/components/site/Industries";
 import WhyChoose from "@/components/site/WhyChoose";
@@ -13,6 +14,8 @@ import CTA from "@/components/site/CTA";
 import OfferPopup from "@/components/site/OfferPopup";
 import { prisma } from "@/lib/prisma";
 import { getSettings } from "@/lib/settings";
+import { toSlide } from "@/lib/brandShowcase";
+import { SITE_CONTENT_DEFAULTS } from "@/lib/siteContentDefaults";
 
 export const dynamic = "force-dynamic";
 
@@ -29,8 +32,32 @@ export async function generateMetadata() {
   };
 }
 
+async function loadShowcase() {
+  try {
+    const [rows, content] = await Promise.all([
+      prisma.showcaseBrand.findMany({
+        where: { isActive: true },
+        orderBy: [{ order: "asc" }, { id: "asc" }],
+      }),
+      prisma.siteContent.findUnique({ where: { section: "brandshowcase" } }),
+    ]);
+    const defaults = SITE_CONTENT_DEFAULTS.brandshowcase;
+    return {
+      brands: rows.map(toSlide),
+      header: {
+        eyebrow: content?.eyebrow || defaults.eyebrow,
+        heading: content?.heading || defaults.heading,
+        subtext: content?.body1 || defaults.body1,
+      },
+    };
+  } catch {
+    return { brands: [], header: {} };
+  }
+}
+
 export default async function HomePage() {
   const settings = await getSettings();
+  const showcase = await loadShowcase();
   const [slides, stripBrands, productFinderContent, popupRow] = await Promise.all([
     prisma.heroSlide.findMany({
       where: { isActive: true },
@@ -69,6 +96,9 @@ export default async function HomePage() {
       <About />
       <Categories />
       <FeaturedProducts />
+      {showcase.brands.length > 0 && (
+        <BrandShowcase brands={showcase.brands} header={showcase.header} />
+      )}
       <OilBattery />
       <Industries />
       <WhyChoose />

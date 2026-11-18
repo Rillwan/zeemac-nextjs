@@ -10,6 +10,7 @@ const TABS = [
   { href: '/admin', label: 'Products' },
   { href: '/admin/categories', label: 'Categories' },
   { href: '/admin/brands', label: 'Brands' },
+  { href: '/admin/brand-showcase', label: 'Brand Showcase' },
   { href: '/admin/content', label: 'Page content' },
   { href: '/admin/seo', label: 'SEO' },
   { href: '/admin/homepage-items', label: 'Homepage Items' },

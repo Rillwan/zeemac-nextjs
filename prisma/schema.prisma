@@ -216,3 +216,24 @@ model Banner {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model ShowcaseBrand {
+  id           Int      @id @default(autoincrement())
+  name         String
+  logo         String?
+  image        String
+  imageAlt     String?
+  badge        String?
+  tagline      String?
+  title        String
+  paragraphs   String?
+  highlights   String?
+  accent       String   @default("#1E63D6")
+  tint         String   @default("#EAF3FE")
+  productsLink String?
+  quoteLink    String?
+  isActive     Boolean  @default(true)
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

@@ -7,6 +7,7 @@ const VALID_SECTIONS = {
   about: "About Section",
   categories: "Categories Section",
   brands: "Brands Section",
+  brandshowcase: "Brands We Distribute (heading of the tabbed section)",
   industries: "Industries Section",
   whychoose: "Why Choose Us Section",
   productfinder: "Product Finder Section",
