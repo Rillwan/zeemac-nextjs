@@ -93,12 +93,12 @@ export default async function HomePage() {
       <Hero slides={slides} />
       <Banners />
       <BrandsStrip brands={stripBrands} />
-      <About />
-      <Categories />
-      <FeaturedProducts />
       {showcase.brands.length > 0 && (
         <BrandShowcase brands={showcase.brands} header={showcase.header} />
       )}
+      <About />
+      <Categories />
+      <FeaturedProducts />
       <OilBattery />
       <Industries />
       <WhyChoose />

@@ -191,18 +191,18 @@ export default function Preloader() {
         <div className="preloader-inner">
           <div className="preloader-logo" ref={logoRef}>
             <Image
-              src="/images/zeemac-logo.png"
+              src="/images/logo.png"
               alt=""
-              width={132}
+              width={140}
               height={106}
               priority
             />
           </div>
-          <div className="flex items-center gap-2">
+          {/* <div className="flex items-center gap-2">
             <SplitLine text="Zeemac" className="pl-name" />
             <SplitLine text="Filters" className="pl-sub" />
-          </div>
-          <div className="flex items-center gap-1.5">
+          </div> */}
+          {/* <div className="flex items-center gap-1.5">
             <SplitLine
               text="COMPLETE"
               className="text-[10px] tracking-[0.18em] text-slate-900 font-semibold -mt-0.5 whitespace-nowrap"
@@ -215,7 +215,7 @@ export default function Preloader() {
               text="SOLUTIONS"
               className="text-[10px] tracking-[0.18em] text-slate-900 font-semibold -mt-0.5 whitespace-nowrap"
             />
-          </div>
+          </div> */}
         </div>
       </div>
       <noscript>

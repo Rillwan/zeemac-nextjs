@@ -18,13 +18,13 @@ function BrandLogo({ brand }) {
     return <span className="text-2xl font-extrabold text-brand-navy">{brand.name}</span>;
   }
   return (
-    <div className="relative h-12 w-44 sm:h-14 sm:w-52">
+    <div className="relative h-[60px] w-48 sm:h-[75px]">
       <Image
         src={brand.logo}
         alt={`${brand.name} logo`}
         fill
-        sizes="208px"
-        className="object-contain object-left"
+        sizes="300"
+        className="object-contain object-left "
       />
     </div>
   );
