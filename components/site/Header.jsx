@@ -123,12 +123,12 @@ export default function Header({ categories = [], industries = [] }) {
             aria-label="Zeemac Filters home"
           >
             <Image
-              src="/images/zeemac-logo.png"
+              src="/images/logo.png"
               alt="Zeemac Filters"
-              width={120}
+              width={135}
               height={60}
               priority
-              className="w-[56px] h-auto"
+              className="w-[65px] h-auto"
             />
             <span className="leading-tight min-w-0">
               <span className="block text-lg sm:text-xl font-extrabold text-brand-navy truncate">
